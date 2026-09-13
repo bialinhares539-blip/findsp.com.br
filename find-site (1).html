@@ -4,352 +4,974 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>find' — Descubra São Paulo</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--blue:#3A4FD6;--navy:#1A2035;--cream:#F5F0E8;--orange:#D45F3C;--lime:#C8E84A;--green:#2D7A3A;--red:#C83B2A;--white:#FAFAF8}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);overflow-x:hidden}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;transition:background .4s,backdrop-filter .4s}
-nav.scrolled{background:rgba(245,240,232,.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(26,32,53,.08)}
-.nav-logo{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--blue);letter-spacing:-.02em}
-.nav-logo span{font-style:italic}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;transition:background .4s,backdrop-filter .4s}
+nav.scrolled{background:rgba(245,240,232,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(26,32,53,.08)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--blue);letter-spacing:-.02em;text-decoration:none}
+.nav-logo em{font-style:italic}
 .nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{text-decoration:none;color:var(--navy);font-size:.85rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;opacity:.7;transition:opacity .2s}
+.nav-links a{text-decoration:none;color:var(--navy);font-size:.82rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;opacity:.6;transition:opacity .2s}
 .nav-links a:hover{opacity:1}
-.nav-cta{background:var(--blue);color:#fff;padding:10px 24px;border-radius:40px;font-size:.85rem;font-weight:500;text-decoration:none;transition:transform .2s,background .2s}
+.nav-cta{background:var(--blue);color:#fff;padding:10px 22px;border-radius:40px;font-size:.82rem;font-weight:500;text-decoration:none;transition:transform .2s,background .2s}
 .nav-cta:hover{transform:translateY(-1px);background:var(--navy)}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:120px 48px 80px;position:relative;overflow:hidden;background:var(--navy)}
-.hero-dots{position:absolute;inset:0;pointer-events:none}
-.hero-dots .dot{position:absolute;border-radius:50%;animation:floatDot 8s ease-in-out infinite}
-@keyframes floatDot{0%,100%{transform:translate(0,0)}33%{transform:translate(12px,-18px)}66%{transform:translate(-8px,10px)}}
-.hero-label{font-size:.75rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--lime);margin-bottom:24px;opacity:0;animation:fadeUp .8s .2s ease forwards}
-.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,9vw,8rem);font-weight:900;line-height:.95;color:var(--cream);max-width:900px;opacity:0;animation:fadeUp .9s .4s ease forwards}
+
+/* HERO */
+.hero{min-height:auto;display:flex;flex-direction:column;justify-content:center;padding:104px 48px 48px;position:relative;overflow:hidden;background:var(--navy)}
+.hero-bg-dots{position:absolute;inset:0;pointer-events:none}
+.hero-bg-dots .d{position:absolute;border-radius:50%;animation:flt 9s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translate(0,0)}33%{transform:translate(14px,-20px)}66%{transform:translate(-10px,12px)}}
+.hero-top{flex:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-bottom:22px;position:relative;z-index:1}
+.hero-eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);margin-bottom:14px;opacity:0;animation:fu .8s .2s ease forwards}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,6.5vw,5.2rem);font-weight:900;letter-spacing:-.02em;line-height:.98;color:var(--cream);max-width:820px;opacity:0;animation:fu .9s .35s ease forwards}
 .hero-title em{font-style:italic;color:var(--blue)}
-.hero-sub{margin-top:32px;font-size:1.15rem;font-weight:300;color:rgba(245,240,232,.6);max-width:480px;line-height:1.65;opacity:0;animation:fadeUp .9s .6s ease forwards}
-.hero-actions{margin-top:48px;display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .9s .8s ease forwards}
-.btn-primary{background:var(--blue);color:#fff;padding:16px 36px;border-radius:50px;font-size:1rem;font-weight:500;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 30px rgba(58,79,214,.4)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(58,79,214,.5)}
-.btn-ghost{border:1.5px solid rgba(245,240,232,.3);color:var(--cream);padding:16px 36px;border-radius:50px;font-size:1rem;font-weight:400;text-decoration:none;transition:border-color .2s,background .2s}
-.btn-ghost:hover{border-color:var(--cream);background:rgba(245,240,232,.08)}
-.hero-scroll{position:absolute;bottom:40px;left:48px;display:flex;align-items:center;gap:12px;color:rgba(245,240,232,.4);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;animation:fadeUp .9s 1.2s ease forwards;opacity:0}
-.hero-scroll::before{content:'';display:block;width:40px;height:1px;background:rgba(245,240,232,.3)}
-.hero-logo-big{position:absolute;right:-40px;bottom:-60px;font-family:'Playfair Display',serif;font-size:clamp(10rem,25vw,22rem);font-weight:900;font-style:italic;color:rgba(58,79,214,.12);line-height:1;pointer-events:none;user-select:none}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-section{padding:100px 48px}
-.section-label{font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
-.section-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;line-height:1.05;max-width:700px}
-.section-title em{font-style:italic;color:var(--blue)}
-.how{background:var(--cream);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.how-steps{margin-top:48px;display:flex;flex-direction:column;gap:32px}
-.how-step{display:flex;gap:20px;align-items:flex-start}
-.how-step-num{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;display:flex;align-items:center;justify-content:center}
-.how-step-body h4{font-size:1rem;font-weight:600;margin-bottom:6px}
-.how-step-body p{font-size:.9rem;opacity:.6;line-height:1.6}
-.how-visual{background:var(--navy);border-radius:28px;padding:48px 32px;position:relative;overflow:hidden;min-height:480px;display:flex;flex-direction:column;gap:16px}
-.chat-bubble{background:rgba(245,240,232,.95);border-radius:20px 20px 20px 4px;padding:14px 20px;max-width:280px;font-size:.9rem;color:var(--navy);font-weight:400;animation:popIn .4s ease forwards;opacity:0}
-.chat-bubble.right{align-self:flex-end;border-radius:20px 20px 4px 20px;background:var(--blue);color:#fff}
-.chat-bubble:nth-child(1){animation-delay:.3s}.chat-bubble:nth-child(2){animation-delay:1s}.chat-bubble:nth-child(3){animation-delay:1.7s}.chat-bubble:nth-child(4){animation-delay:2.4s}
-@keyframes popIn{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-.how-visual-dots{position:absolute;bottom:32px;left:32px;display:flex;gap:8px}
-.how-dot{width:10px;height:10px;border-radius:50%}
-.areas{background:var(--white)}
-.areas-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:24px}
-.cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.area-card{border-radius:20px;overflow:hidden;cursor:pointer;position:relative;aspect-ratio:3/4;transition:transform .3s,box-shadow .3s;display:flex;flex-direction:column;justify-content:flex-end}
-.area-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(26,32,53,.2)}
-.area-card-bg{position:absolute;inset:0;overflow:hidden}
-.area-card-dots{position:absolute;inset:0;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:6px;padding:24px}
-.area-card-content{position:relative;z-index:2;padding:24px 20px;background:linear-gradient(to top,rgba(26,32,53,.85) 0%,transparent 100%)}
-.area-card-icon{font-size:1.6rem;margin-bottom:8px}
-.area-card-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:4px}
-.area-card-sub{font-size:.75rem;color:rgba(255,255,255,.65)}
-.area-card-tag{display:inline-block;background:rgba(255,255,255,.18);color:#fff;font-size:.65rem;font-weight:500;padding:4px 10px;border-radius:20px;margin-top:10px;letter-spacing:.06em}
-.occasions{background:var(--navy)}
-.occasions .section-label{color:var(--lime)}
-.occasions .section-title{color:var(--cream)}
-.occasions-grid{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.occasion-card{border-radius:20px;padding:32px 28px;cursor:pointer;transition:transform .25s;position:relative;overflow:hidden;min-height:200px;display:flex;flex-direction:column;justify-content:flex-end}
-.occasion-card:hover{transform:scale(1.02)}
-.occ-dots{position:absolute;inset:0;opacity:.25;display:flex;flex-wrap:wrap;gap:5px;padding:20px;align-content:flex-start;justify-content:flex-end}
-.occasion-emoji{font-size:2rem;margin-bottom:12px;position:relative;z-index:1}
-.occasion-title{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:800;margin-bottom:6px;position:relative;z-index:1}
-.occasion-desc{font-size:.8rem;opacity:.75;line-height:1.5;position:relative;z-index:1}
-.benefits{background:var(--cream)}
-.benefits-grid{margin-top:56px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-.benefit-card{background:var(--white);border-radius:20px;padding:32px 24px;border:1px solid rgba(26,32,53,.07);transition:transform .25s,box-shadow .25s}
-.benefit-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(26,32,53,.1)}
-.benefit-icon{width:52px;height:52px;border-radius:14px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px}
-.benefit-title{font-size:1rem;font-weight:600;margin-bottom:10px}
-.benefit-desc{font-size:.85rem;opacity:.6;line-height:1.65}
-.testimonials{background:var(--white)}
-.testimonials-grid{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.testimonial-card{background:var(--cream);border-radius:20px;padding:32px 28px;position:relative}
-.testimonial-stars{color:var(--orange);font-size:1rem;margin-bottom:16px;letter-spacing:2px}
-.testimonial-text{font-size:.95rem;line-height:1.7;opacity:.8;font-style:italic;margin-bottom:24px}
-.testimonial-author{display:flex;align-items:center;gap:12px}
-.t-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff}
-.t-name{font-weight:600;font-size:.875rem}
-.t-role{font-size:.75rem;opacity:.5;margin-top:2px}
-.t-quote{position:absolute;top:24px;right:28px;font-family:'Playfair Display',serif;font-size:4rem;color:var(--blue);opacity:.15;line-height:1;font-style:italic}
-.map-section{background:var(--navy);padding:100px 48px}
-.map-section .section-label{color:var(--lime)}
-.map-section .section-title{color:var(--cream)}
-.map-content{display:grid;grid-template-columns:1fr 1.3fr;gap:64px;margin-top:56px;align-items:center}
-.map-text p{color:rgba(245,240,232,.6);font-size:1rem;line-height:1.8;margin-top:20px}
-.map-feats{margin-top:36px;display:flex;flex-direction:column;gap:16px}
-.map-feat{display:flex;align-items:center;gap:14px;color:var(--cream);font-size:.9rem}
-.mf-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.map-visual-box{background:rgba(245,240,232,.04);border-radius:24px;padding:40px;position:relative;min-height:400px;border:1px solid rgba(245,240,232,.08);overflow:hidden}
-.map-place{position:absolute;display:flex;align-items:center;gap:10px}
-.mp-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
-.mp-label{background:rgba(245,240,232,.9);color:var(--navy);font-size:.72rem;font-weight:500;padding:4px 10px;border-radius:20px;white-space:nowrap}
-.map-ring{position:absolute;border-radius:50%;border:1.5px solid;opacity:.15;animation:ringPulse 3s ease-in-out infinite}
-@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.15}50%{transform:scale(1.08);opacity:.07}}
-.cta-section{background:var(--blue);padding:120px 48px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden}
-.cta-section .section-label{color:var(--lime)}
-.cta-title{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;color:var(--cream);max-width:800px;line-height:1.05;margin-top:12px}
-.cta-title em{font-style:italic;color:var(--lime)}
-.cta-sub{color:rgba(245,240,232,.65);font-size:1.05rem;max-width:540px;line-height:1.65;margin-top:24px}
-.cta-actions{display:flex;gap:16px;margin-top:48px;flex-wrap:wrap;justify-content:center}
-.cta-btn-w{background:var(--cream);color:var(--blue);padding:16px 36px;border-radius:50px;font-size:1rem;font-weight:600;text-decoration:none;transition:transform .2s;box-shadow:0 4px 30px rgba(0,0,0,.2)}
-.cta-btn-w:hover{transform:translateY(-2px)}
-.cta-btn-o{border:1.5px solid rgba(245,240,232,.4);color:var(--cream);padding:16px 36px;border-radius:50px;font-size:1rem;font-weight:400;text-decoration:none;transition:border-color .2s}
-.cta-btn-o:hover{border-color:var(--cream)}
-.cta-bg-logo{position:absolute;right:-60px;bottom:-80px;font-family:'Playfair Display',serif;font-size:clamp(12rem,28vw,26rem);font-weight:900;font-style:italic;color:rgba(245,240,232,.06);pointer-events:none;user-select:none;line-height:1}
-.survey-inner{margin-top:64px;background:rgba(255,255,255,.1);border-radius:24px;padding:48px;max-width:680px;width:100%;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);position:relative;z-index:1}
-.survey-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--cream);margin-bottom:8px}
-.survey-sub{font-size:.85rem;color:rgba(245,240,232,.6);margin-bottom:32px}
-.survey-q{color:var(--cream);font-size:.9rem;font-weight:500;margin-bottom:12px}
-.survey-options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.survey-opt{border:1.5px solid rgba(245,240,232,.3);color:var(--cream);padding:8px 18px;border-radius:30px;font-size:.8rem;cursor:pointer;transition:all .2s;background:transparent;font-family:'DM Sans',sans-serif}
-.survey-opt:hover,.survey-opt.active{background:var(--cream);color:var(--blue);border-color:var(--cream)}
-.survey-input{width:100%;background:rgba(255,255,255,.1);border:1.5px solid rgba(245,240,232,.25);color:var(--cream);padding:14px 18px;border-radius:12px;font-size:.9rem;font-family:'DM Sans',sans-serif;margin-bottom:20px;outline:none;transition:border-color .2s}
-.survey-input::placeholder{color:rgba(245,240,232,.35)}
-.survey-input:focus{border-color:var(--lime)}
-.survey-submit{background:var(--lime);color:var(--navy);padding:14px 32px;border-radius:40px;font-size:.9rem;font-weight:600;border:none;font-family:'DM Sans',sans-serif;cursor:pointer;transition:transform .2s}
-.survey-submit:hover{transform:scale(1.02)}
-.marquee-strip{background:var(--blue);overflow:hidden;padding:18px 0;white-space:nowrap}
-.marquee-inner{display:inline-flex;animation:mq 30s linear infinite}
-.marquee-inner span{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;font-style:italic;color:rgba(245,240,232,.85);padding:0 32px;letter-spacing:.02em}
+.hero-sub{margin-top:16px;font-size:.95rem;font-weight:300;color:rgba(245,240,232,.5);max-width:460px;line-height:1.6;opacity:0;animation:fu .9s .55s ease forwards}
+@keyframes fu{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* DISCOVERY ENGINE */
+.discovery{width:100%;opacity:0;animation:fu .9s .75s ease forwards;position:relative;z-index:2;margin-top:8px}
+.disc-bar{background:rgba(26,32,53,.55);backdrop-filter:blur(24px);border:1.5px solid rgba(200,232,74,.4);border-radius:26px;padding:34px 44px 36px;display:flex;flex-direction:column;align-items:stretch;gap:26px;box-shadow:0 30px 70px rgba(0,0,0,.45),0 0 0 1px rgba(245,240,232,.05) inset;margin:0 auto;max-width:1180px}
+.disc-filters-row{display:flex;align-items:flex-start;gap:28px;flex-wrap:wrap;justify-content:center}
+.disc-col{display:flex;flex-direction:column;gap:12px}
+.disc-col-label{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lime)}
+.disc-btns{display:flex;gap:8px;flex-wrap:wrap}
+.disc-btn{border:1.5px solid rgba(245,240,232,.25);color:rgba(245,240,232,.75);padding:11px 22px;border-radius:38px;font-size:.92rem;font-weight:400;cursor:pointer;background:rgba(245,240,232,.04);font-family:'DM Sans',sans-serif;transition:all .2s;white-space:nowrap}
+.disc-btn:hover{border-color:rgba(245,240,232,.5);color:var(--cream);background:rgba(245,240,232,.1)}
+.disc-btn.active-cat{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:500;box-shadow:0 2px 12px rgba(58,79,214,.4)}
+.disc-btn.active-mom{background:var(--lime);border-color:var(--lime);color:var(--navy);font-weight:600;box-shadow:0 2px 12px rgba(200,232,74,.35)}
+.disc-select{border:1.5px solid rgba(245,240,232,.25);color:rgba(245,240,232,.85);padding:11px 36px 11px 18px;border-radius:38px;font-size:.88rem;font-weight:400;cursor:pointer;background:rgba(245,240,232,.04) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="%23C8E84A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 14px center;background-size:12px;font-family:'DM Sans',sans-serif;transition:all .2s;-webkit-appearance:none;appearance:none;white-space:nowrap}
+.disc-select:hover{border-color:rgba(245,240,232,.5)}
+.disc-select:focus{outline:none;border-color:var(--lime)}
+.disc-select option{background:var(--navy);color:var(--cream)}
+.disc-divider{width:1px;background:rgba(245,240,232,.15);align-self:stretch;flex-shrink:0}
+.disc-go-row{display:flex;justify-content:center}
+.disc-go{background:var(--lime);color:var(--navy);padding:16px 38px;border-radius:38px;font-size:1rem;font-weight:700;border:none;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 6px 26px rgba(200,232,74,.5)}
+.disc-go:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,232,74,.45);background:#d4f542}
+.disc-go .go-arr{transition:transform .2s}
+.disc-go:hover .go-arr{transform:translateX(5px)}
+.hero-logo-bg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:clamp(8rem,22vw,20rem);font-weight:900;letter-spacing:-.02em;color:rgba(58,79,214,.08);line-height:1;pointer-events:none;user-select:none;text-align:center;white-space:nowrap}
+.hero-logo-bg em{font-style:italic}
+.hero-scroll-hint{display:none}
+
+/* MARQUEE */
+.marquee-strip{background:var(--blue);overflow:hidden;padding:16px 0;white-space:nowrap}
+.marquee-inner{display:inline-flex;animation:mq 28s linear infinite}
+.marquee-inner span{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;font-style:italic;color:rgba(245,240,232,.8);padding:0 28px;letter-spacing:.02em}
 .marquee-inner span.sep{color:var(--lime)}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-footer{background:var(--navy);padding:64px 48px 40px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
-.f-logo{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--blue);display:block;margin-bottom:16px;letter-spacing:-.02em}
-.footer-brand p{font-size:.875rem;opacity:.45;line-height:1.7;max-width:260px;color:var(--cream)}
-.footer-col h5{color:var(--cream);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:20px}
-.footer-col a{display:block;color:rgba(245,240,232,.45);text-decoration:none;font-size:.875rem;margin-bottom:10px;transition:color .2s}
-.footer-col a:hover{color:var(--cream)}
-.footer-bottom{grid-column:1/-1;border-top:1px solid rgba(245,240,232,.08);padding-top:32px;margin-top:16px;display:flex;justify-content:space-between;font-size:.75rem;color:rgba(245,240,232,.3)}
-.footer-social{display:flex;gap:16px}
-.footer-social a{color:rgba(245,240,232,.4);text-decoration:none;font-size:.75rem;transition:color .2s}
-.footer-social a:hover{color:var(--cream)}
-.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+
+/* RESULTS SECTION */
+#results-section{background:var(--white);padding:80px 48px;display:none}
+#results-section.visible{display:block}
+.results-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:16px}
+.results-eyebrow{font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+.results-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;line-height:1.05}
+.results-title em{font-style:italic;color:var(--blue)}
+.results-count{font-size:.82rem;color:rgba(26,32,53,.45);font-weight:400}
+.places-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+/* PLACE CARD */
+.place-card{background:var(--cream);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform .28s,box-shadow .28s;border:1px solid rgba(26,32,53,.06)}
+.place-card:hover{transform:translateY(-5px);box-shadow:0 18px 50px rgba(26,32,53,.14)}
+.place-card-thumb{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center}
+.place-card-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,32,53,.45) 0%,rgba(26,32,53,0) 45%)}
+.place-card-badge{position:absolute;top:14px;left:14px;background:rgba(26,32,53,.75);backdrop-filter:blur(6px);color:#fff;font-size:.65rem;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase}
+.place-card-price{position:absolute;bottom:14px;right:14px;background:var(--lime);color:var(--navy);font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px}
+.place-fav-btn{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(26,32,53,.55);backdrop-filter:blur(6px);border:none;color:#fff;font-size:1.05rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0}
+.place-fav-btn:hover{background:rgba(26,32,53,.8);transform:scale(1.1)}
+.place-fav-btn.on{color:var(--red);background:rgba(255,255,255,.9)}
+.place-card-body{padding:20px}
+.place-card-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:800;margin-bottom:6px}
+.place-card-desc{font-size:.82rem;color:rgba(26,32,53,.55);line-height:1.55;margin-bottom:14px}
+.place-card-meta{display:flex;gap:12px;flex-wrap:wrap}
+.place-meta-tag{display:flex;align-items:center;gap:5px;font-size:.72rem;color:rgba(26,32,53,.5);font-weight:400}
+.place-meta-tag svg{opacity:.6}
+.place-card-footer{border-top:1px solid rgba(26,32,53,.07);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.place-stars{color:var(--orange);font-size:.8rem;letter-spacing:1px}
+.place-rating-num{font-size:.75rem;font-weight:600;color:rgba(26,32,53,.5);margin-left:5px}
+.place-btn{font-size:.75rem;font-weight:600;color:var(--blue);text-decoration:none;letter-spacing:.03em;display:flex;align-items:center;gap:4px;transition:gap .2s}
+.place-btn:hover{gap:7px}
+
+/* PROFILE MODAL */
+#modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(26,32,53,.7);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding:40px 24px;overflow-y:auto}
+#modal-overlay.open{display:flex}
+.modal-box{background:var(--white);border-radius:28px;max-width:780px;width:100%;margin:auto;overflow:hidden;animation:modalIn .35s cubic-bezier(.22,1,.36,1)}
+@keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal-hero{height:280px;position:relative;overflow:hidden;display:flex;align-items:flex-end;background-size:cover;background-position:center}
+.modal-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,32,53,.85) 0%,transparent 60%)}
+.modal-hero-content{position:relative;z-index:2;padding:28px 32px;width:100%}
+.modal-hero-badge{display:inline-block;background:rgba(255,255,255,.18);color:#fff;font-size:.65rem;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.modal-name{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#fff;line-height:1.05}
+.modal-tagline{font-size:.9rem;color:rgba(255,255,255,.65);margin-top:5px}
+.modal-close{position:absolute;top:16px;right:16px;z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(245,240,232,.2);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;backdrop-filter:blur(4px)}
+.modal-close:hover{background:rgba(245,240,232,.35)}
+.modal-body{padding:32px}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
+.modal-info-card{background:var(--cream);border-radius:16px;padding:20px}
+.modal-info-title{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,32,53,.4);margin-bottom:14px}
+.modal-info-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:.875rem;color:var(--navy)}
+.modal-info-row:last-child{margin-bottom:0}
+.modal-info-icon{width:28px;height:28px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem}
+.modal-info-text{line-height:1.5}
+.modal-info-text strong{display:block;font-size:.75rem;font-weight:600;opacity:.5;margin-bottom:1px}
+.modal-section-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;margin-bottom:16px}
+.modal-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.modal-tag{background:var(--cream);border:1px solid rgba(26,32,53,.1);color:var(--navy);font-size:.75rem;padding:6px 14px;border-radius:20px;font-weight:400}
+
+/* RATINGS */
+.ratings-summary{display:flex;align-items:center;gap:24px;background:var(--cream);border-radius:16px;padding:20px 24px;margin-bottom:24px}
+.rating-big{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;color:var(--navy);line-height:1}
+.rating-stars-big{color:var(--orange);font-size:1.4rem;letter-spacing:2px;margin-bottom:4px}
+.rating-count{font-size:.78rem;color:rgba(26,32,53,.45)}
+.rating-bars{flex:1}
+.rating-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.rating-bar-lbl{font-size:.72rem;color:rgba(26,32,53,.5);width:12px;text-align:right}
+.rating-bar-track{flex:1;height:5px;background:rgba(26,32,53,.1);border-radius:10px;overflow:hidden}
+.rating-bar-fill{height:100%;background:var(--orange);border-radius:10px;transition:width .6s ease}
+.rating-bar-pct{font-size:.68rem;color:rgba(26,32,53,.4);width:28px}
+
+/* REVIEW FORM */
+.review-form{background:var(--cream);border-radius:16px;padding:20px 24px;margin-bottom:24px}
+.review-form-title{font-size:.875rem;font-weight:600;margin-bottom:14px}
+.star-picker{display:flex;gap:6px;margin-bottom:14px}
+.star-pick{font-size:1.5rem;cursor:pointer;transition:transform .15s;filter:grayscale(1) opacity(.35)}
+.star-pick.lit{filter:none;transform:scale(1.1)}
+.review-textarea{width:100%;background:#fff;border:1.5px solid rgba(26,32,53,.12);color:var(--navy);padding:12px 16px;border-radius:12px;font-size:.875rem;font-family:'DM Sans',sans-serif;outline:none;resize:vertical;min-height:80px;transition:border-color .2s}
+.review-textarea:focus{border-color:var(--blue)}
+.review-submit{background:var(--blue);color:#fff;padding:10px 24px;border-radius:30px;font-size:.825rem;font-weight:600;border:none;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:10px;transition:transform .2s}
+.review-submit:hover{transform:scale(1.02)}
+
+/* COMMENTS */
+.comment-card{padding:16px 0;border-bottom:1px solid rgba(26,32,53,.07)}
+.comment-card:last-child{border-bottom:none}
+.comment-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.comment-author{display:flex;align-items:center;gap:10px}
+.comment-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;flex-shrink:0}
+.comment-name{font-size:.85rem;font-weight:600}
+.comment-date{font-size:.72rem;opacity:.4;margin-top:2px}
+.comment-stars{color:var(--orange);font-size:.78rem}
+.comment-text{font-size:.85rem;line-height:1.6;color:rgba(26,32,53,.7);margin-left:44px}
+
+/* HOW + BENEFITS (kept from v2) */
+.how-section{background:var(--cream);padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.how-steps{margin-top:40px;display:flex;flex-direction:column;gap:28px}
+.how-step{display:flex;gap:18px;align-items:flex-start}
+.how-step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.how-step-body h4{font-size:.95rem;font-weight:600;margin-bottom:5px}
+.how-step-body p{font-size:.85rem;opacity:.55;line-height:1.6}
+.how-visual{background:var(--navy);border-radius:24px;padding:40px 28px;position:relative;overflow:hidden;min-height:440px;display:flex;flex-direction:column;gap:14px}
+.chat-bubble{background:rgba(245,240,232,.95);border-radius:18px 18px 18px 4px;padding:12px 18px;max-width:260px;font-size:.875rem;color:var(--navy);animation:popIn .4s ease forwards;opacity:0}
+.chat-bubble.r{align-self:flex-end;border-radius:18px 18px 4px 18px;background:var(--blue);color:#fff}
+.chat-bubble:nth-child(1){animation-delay:.3s}.chat-bubble:nth-child(2){animation-delay:1s}.chat-bubble:nth-child(3){animation-delay:1.7s}.chat-bubble:nth-child(4){animation-delay:2.4s}
+@keyframes popIn{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.how-vdots{position:absolute;bottom:28px;left:28px;display:flex;gap:7px}
+.hvd{width:9px;height:9px;border-radius:50%}
+
+/* TESTIMONIALS */
+.testi-section{background:var(--white);padding:100px 48px}
+.testi-grid{margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{background:var(--cream);border-radius:20px;padding:28px;position:relative}
+.testi-stars{color:var(--orange);font-size:.9rem;margin-bottom:14px;letter-spacing:2px}
+.testi-text{font-size:.9rem;line-height:1.7;opacity:.75;font-style:italic;margin-bottom:20px}
+.testi-author{display:flex;align-items:center;gap:10px}
+.tav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff}
+.tname{font-weight:600;font-size:.82rem}
+.trole{font-size:.72rem;opacity:.45;margin-top:2px}
+
+/* SOBRE / QUEM SOMOS */
+.sobre-section{background:var(--cream);padding:100px 48px}
+.sobre-text p{font-size:.95rem;line-height:1.75;color:rgba(26,32,53,.7);margin-bottom:18px}
+.sobre-text strong{color:var(--navy)}
+.tq{position:absolute;top:20px;right:24px;font-family:'Playfair Display',serif;font-size:3.5rem;color:var(--blue);opacity:.12;line-height:1;font-style:italic}
+
+/* CTA */
+.cta-sec{background:var(--blue);padding:100px 48px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden}
+.cta-sec .ey{color:var(--lime)}
+.cta-h{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5.5vw,4.5rem);font-weight:900;color:var(--cream);max-width:750px;line-height:1.05;margin-top:12px}
+.cta-h em{font-style:italic;color:var(--lime)}
+.cta-p{color:rgba(245,240,232,.6);font-size:1rem;max-width:500px;line-height:1.7;margin-top:20px}
+.cta-acts{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;justify-content:center}
+.cta-bw{background:var(--cream);color:var(--blue);padding:14px 32px;border-radius:50px;font-size:.95rem;font-weight:600;text-decoration:none;transition:transform .2s}
+.cta-bw:hover{transform:translateY(-2px)}
+.cta-bo{border:1.5px solid rgba(245,240,232,.35);color:var(--cream);padding:14px 32px;border-radius:50px;font-size:.95rem;font-weight:400;text-decoration:none}
+.cta-bglogo{position:absolute;right:-50px;bottom:-70px;font-family:'Playfair Display',serif;font-size:clamp(10rem,24vw,22rem);font-weight:900;font-style:italic;color:rgba(245,240,232,.05);pointer-events:none;user-select:none;line-height:1}
+.survey-wrap{margin-top:56px;background:rgba(255,255,255,.1);border-radius:22px;padding:40px;max-width:640px;width:100%;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);position:relative;z-index:1}
+.survey-t{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--cream);margin-bottom:6px}
+.survey-s{font-size:.82rem;color:rgba(245,240,232,.55);margin-bottom:28px}
+.survey-q{color:var(--cream);font-size:.875rem;font-weight:500;margin-bottom:10px}
+.survey-opts{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.sopt{border:1.5px solid rgba(245,240,232,.25);color:var(--cream);padding:7px 16px;border-radius:28px;font-size:.78rem;cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .18s}
+.sopt.on{background:var(--lime);border-color:var(--lime);color:var(--navy);font-weight:600}
+.sinp{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(245,240,232,.2);color:var(--cream);padding:12px 16px;border-radius:11px;font-size:.875rem;font-family:'DM Sans',sans-serif;margin-bottom:16px;outline:none;transition:border-color .2s}
+.sinp::placeholder{color:rgba(245,240,232,.3)}
+.sinp:focus{border-color:var(--lime)}
+.sinp[type=date]{color-scheme:dark;cursor:pointer}
+.sinp[type=date]::-webkit-calendar-picker-indicator{filter:invert(1) opacity(.4);cursor:pointer}
+.ssubmit{background:var(--lime);color:var(--navy);padding:13px 28px;border-radius:38px;font-size:.875rem;font-weight:700;border:none;font-family:'DM Sans',sans-serif;cursor:pointer;transition:transform .2s}
+.ssubmit:hover{transform:scale(1.02)}
+
+/* FOOTER */
+footer{background:var(--navy);padding:56px 48px 36px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px}
+.flogo{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--blue);display:block;margin-bottom:14px;letter-spacing:-.02em}
+.fbrand p{font-size:.82rem;opacity:.4;line-height:1.7;max-width:240px;color:var(--cream)}
+.fcol h5{color:var(--cream);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:18px}
+.fcol a{display:block;color:rgba(245,240,232,.4);text-decoration:none;font-size:.82rem;margin-bottom:9px;transition:color .2s}
+.fcol a:hover{color:var(--cream)}
+.fbot{grid-column:1/-1;border-top:1px solid rgba(245,240,232,.07);padding-top:28px;margin-top:12px;display:flex;justify-content:space-between;font-size:.72rem;color:rgba(245,240,232,.25)}
+.fsoc{display:flex;gap:14px}
+.fsoc a{color:rgba(245,240,232,.35);text-decoration:none;font-size:.72rem;transition:color .2s}
+.fsoc a:hover{color:var(--cream)}
+
+/* POPUP */
+#popup-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(26,32,53,.78);backdrop-filter:blur(6px);opacity:0;animation:popOverlay .4s .9s ease forwards}
+@keyframes popOverlay{to{opacity:1}}
+#popup-overlay.hidden{display:none}
+.popup-box{background:var(--navy);border-radius:22px;max-width:400px;width:100%;position:relative;overflow:hidden;transform:translateY(28px) scale(.97);animation:popBox .45s 1.1s cubic-bezier(.22,1,.36,1) forwards;opacity:0;max-height:88vh;overflow-y:auto}
+@keyframes popBox{to{transform:translateY(0) scale(1);opacity:1}}
+.popup-top{background:var(--blue);padding:24px 26px 20px;position:relative;overflow:hidden}
+.ptdots{position:absolute;inset:0;pointer-events:none}
+.plogo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--cream);margin-bottom:6px}
+.plogo em{font-style:italic}
+.phead{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:800;color:var(--cream);line-height:1.2;margin-bottom:5px}
+.psub{font-size:.76rem;color:rgba(245,240,232,.62);line-height:1.5}
+.popup-body{padding:20px 26px 26px}
+.plbl{color:var(--cream);font-size:.72rem;font-weight:500;margin-bottom:5px;opacity:.8}
+.pinp{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(245,240,232,.18);color:var(--cream);padding:9px 13px;border-radius:10px;font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;margin-bottom:10px}
+.pinp::placeholder{color:rgba(245,240,232,.28)}
+.pinp[type=date]{color-scheme:dark;cursor:pointer}
+.pinp[type=date]::-webkit-calendar-picker-indicator{filter:invert(1) opacity(.4);cursor:pointer}
+.pinp:focus{border-color:var(--lime)}
+.pchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.pcheck{display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;cursor:pointer;font-size:.7rem;line-height:1.4;color:rgba(245,240,232,.6)}
+.pcheck input{margin-top:2px;width:14px;height:14px;accent-color:var(--lime);cursor:pointer;flex-shrink:0}
+.pchip{border:1.5px solid rgba(245,240,232,.22);color:rgba(245,240,232,.7);padding:5px 11px;border-radius:28px;font-size:.68rem;cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .18s}
+.pchip.on{background:var(--lime);border-color:var(--lime);color:var(--navy);font-weight:600}
+.pbtn{width:100%;background:var(--lime);color:var(--navy);padding:12px;border-radius:38px;font-size:.85rem;font-weight:700;border:none;font-family:'DM Sans',sans-serif;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(200,232,74,.3)}
+.pbtn:hover{transform:scale(1.02)}
+.pskip{display:block;text-align:center;margin-top:10px;font-size:.68rem;color:rgba(245,240,232,.32);cursor:pointer;transition:color .2s;border:none;background:none;font-family:'DM Sans',sans-serif;width:100%}
+.pskip:hover{color:rgba(245,240,232,.55)}
+.pclose{position:absolute;top:11px;right:11px;width:25px;height:25px;border-radius:50%;background:rgba(245,240,232,.16);border:none;color:var(--cream);font-size:.74rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:2}
+.pclose:hover{background:rgba(245,240,232,.28)}
+.pok{text-align:center;padding:12px 0 6px}
+.pok-icon{font-size:2.8rem;margin-bottom:10px}
+.pok h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--cream);font-weight:800;margin-bottom:7px}
+.pok p{font-size:.85rem;color:rgba(245,240,232,.55);line-height:1.6}
+
+/* ADMIN */
+#admin-panel{position:fixed;inset:0;z-index:9997;background:rgba(12,15,26,.97);display:none;flex-direction:column;overflow:hidden}
+#admin-panel.open{display:flex}
+.ahd{background:var(--navy);border-bottom:1px solid rgba(245,240,232,.07);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ahd-l{display:flex;align-items:center;gap:14px}
+.alogo{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;color:var(--lime)}
+.atitle{font-size:.76rem;color:rgba(245,240,232,.38);letter-spacing:.04em}
+.aclose{background:rgba(245,240,232,.07);border:none;color:var(--cream);width:32px;height:32px;border-radius:50%;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.aclose:hover{background:rgba(245,240,232,.15)}
+.abody{flex:1;overflow-y:auto;padding:24px 28px}
+.astats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.astat{background:rgba(245,240,232,.04);border:1px solid rgba(245,240,232,.08);border-radius:14px;padding:16px 20px}
+.astat-n{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--lime)}
+.astat-l{font-size:.68rem;color:rgba(245,240,232,.38);margin-top:3px;letter-spacing:.07em;text-transform:uppercase}
+.atw{background:rgba(245,240,232,.03);border:1px solid rgba(245,240,232,.07);border-radius:16px;overflow:hidden}
+.ath{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(245,240,232,.06)}
+.ath h3{font-size:.88rem;font-weight:600;color:var(--cream)}
+.aacts{display:flex;gap:7px}
+.aexp{background:var(--lime);color:var(--navy);border:none;padding:7px 14px;border-radius:18px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform .15s}
+.aexp:hover{transform:scale(1.04)}
+.aclr{background:transparent;color:#f87171;border:1px solid rgba(248,113,113,.28);padding:7px 13px;border-radius:18px;font-size:.7rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+table.ltbl{width:100%;border-collapse:collapse}
+.ltbl thead th{text-align:left;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,240,232,.28);padding:10px 18px;border-bottom:1px solid rgba(245,240,232,.06)}
+.ltbl tbody tr{border-bottom:1px solid rgba(245,240,232,.04);transition:background .15s}
+.ltbl tbody tr:hover{background:rgba(245,240,232,.03)}
+.ltbl td{padding:12px 18px;font-size:.78rem;color:rgba(245,240,232,.65);vertical-align:middle}
+.tdem{color:var(--cream);font-weight:500}
+.tdbg{display:inline-block;background:rgba(58,79,214,.22);color:#93a8f8;padding:2px 8px;border-radius:9px;font-size:.66rem;font-weight:500;margin:2px}
+.tddt{font-size:.68rem;color:rgba(245,240,232,.28)}
+.aempty{text-align:center;padding:50px 20px;color:rgba(245,240,232,.22);font-size:.85rem}
+
+/* UTILS */
+.ey{font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900;line-height:1.05}
+.sec-title em{font-style:italic;color:var(--blue)}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:900px){nav{padding:16px 24px}.nav-links{display:none}section{padding:72px 24px}.hero{padding:100px 24px 80px}.how{grid-template-columns:1fr}.cards-grid{grid-template-columns:repeat(2,1fr)}.occasions-grid{grid-template-columns:repeat(2,1fr)}.benefits-grid{grid-template-columns:repeat(2,1fr)}.testimonials-grid{grid-template-columns:1fr}.map-content{grid-template-columns:1fr}footer{grid-template-columns:1fr 1fr}.cta-section{padding:80px 24px}.survey-inner{padding:32px 24px}}
+
+@media(max-width:900px){
+  nav{padding:16px 20px}.nav-links{display:none}
+  .hero{padding:80px 20px 28px}
+  .hero-top{padding:16px 0 18px}
+  .disc-bar{padding:22px 20px 26px;gap:18px;border-radius:20px;max-width:100%}
+  .disc-divider{display:none}
+  #results-section{padding:56px 20px}
+  .places-grid{grid-template-columns:1fr}
+  .modal-grid{grid-template-columns:1fr}
+  .modal-box{border-radius:20px}
+  .how-section{grid-template-columns:1fr;padding:72px 20px}
+  .testi-grid{grid-template-columns:1fr}
+  .cta-sec{padding:80px 20px}
+  .survey-wrap{padding:28px 20px}
+  footer{grid-template-columns:1fr 1fr;padding:48px 20px 28px}
+  .astats{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav id="navbar">
-  <div class="nav-logo">find<span>'</span></div>
+  <a class="nav-logo" href="#">find<em>'</em></a>
   <ul class="nav-links">
-    <li><a href="#como-funciona">Como funciona</a></li>
-    <li><a href="#areas">Areas</a></li>
-    <li><a href="#ocasioes">Ocasioes</a></li>
-    <li><a href="#depoimentos">Reviews</a></li>
+    <li><a href="#discover">Descobrir</a></li>
+    <li><a href="#como">Como funciona</a></li>
+    <li><a href="#participe">Entrar</a></li>
   </ul>
-  <a href="#participe" class="nav-cta">Quero testar</a>
+  <a href="#participe" class="nav-cta">Acesso antecipado</a>
 </nav>
 
+<!-- HERO -->
 <section class="hero" id="inicio">
-  <div class="hero-dots" id="heroDots"></div>
-  <div class="hero-label">Sao Paulo -- Descubra, Viva, Repita</div>
-  <h1 class="hero-title">Seu proximo<br>momento <em>inesquecivel</em><br>comeca aqui.</h1>
-  <p class="hero-sub">O find' conecta voce as melhores experiencias de lazer em Sao Paulo. Curadoria real, avaliacoes honestas e tudo que voce precisa para decidir sem stress.</p>
-  <div class="hero-actions">
-    <a href="#participe" class="btn-primary">Descubra experiencias</a>
-    <a href="#como-funciona" class="btn-ghost">Saiba mais</a>
+  <div class="hero-bg-dots" id="heroBgDots"></div>
+  <div class="hero-logo-bg">find<em>'</em></div>
+
+  <div class="hero-top">
+    <div class="hero-eyebrow">São Paulo · Descubra · Viva · Repita</div>
+    <h1 class="hero-title">O que você<br>quer <em>viver</em><br>hoje?</h1>
+    <p class="hero-sub">Bares, restaurantes e experiências em SP — filtrados pelo seu momento. Curadoria real, informações práticas.</p>
   </div>
-  <div class="hero-scroll">Explorar</div>
-  <div class="hero-logo-big">find'</div>
+
+  <div class="discovery" id="discover">
+    <div class="disc-bar">
+      <div class="disc-filters-row">
+        <div class="disc-col">
+          <span class="disc-col-label">Categoria</span>
+          <div class="disc-btns" id="catBtns">
+            <button class="disc-btn" data-cat="bares" onclick="selectCat(this)">🍺 Bares</button>
+            <button class="disc-btn" data-cat="restaurantes" onclick="selectCat(this)">🍽 Restaurantes</button>
+            <button class="disc-btn" data-cat="experiencias" onclick="selectCat(this)">✨ Experiências</button>
+          </div>
+        </div>
+        <div class="disc-divider"></div>
+        <div class="disc-col">
+          <span class="disc-col-label">Momento</span>
+          <div class="disc-btns" id="momBtns">
+            <button class="disc-btn" data-mom="date" onclick="selectMom(this)">💑 Date</button>
+            <button class="disc-btn" data-mom="aniversario" onclick="selectMom(this)">🎂 Aniversário</button>
+            <button class="disc-btn" data-mom="amigos" onclick="selectMom(this)">👯 Rolê com amigos</button>
+          </div>
+        </div>
+        <div class="disc-divider"></div>
+        <div class="disc-col">
+          <span class="disc-col-label">Faixa etária</span>
+          <select class="disc-select" id="ageSelect">
+            <option value="">Todas as idades</option>
+            <option value="18-24">18 a 24 anos</option>
+            <option value="25-34">25 a 34 anos</option>
+            <option value="35-44">35 a 44 anos</option>
+            <option value="45+">45 anos ou mais</option>
+          </select>
+        </div>
+        <div class="disc-col">
+          <span class="disc-col-label">Zona de SP</span>
+          <select class="disc-select" id="zoneSelect">
+            <option value="">Todas as zonas</option>
+            <option value="Zona Oeste">Zona Oeste</option>
+            <option value="Zona Sul">Zona Sul</option>
+            <option value="Zona Leste">Zona Leste</option>
+            <option value="Zona Norte">Zona Norte</option>
+            <option value="Centro">Centro</option>
+          </select>
+        </div>
+        <div class="disc-col">
+          <span class="disc-col-label">Faixa de preço</span>
+          <select class="disc-select" id="priceSelect">
+            <option value="">Qualquer preço</option>
+            <option value="$">$ Acessível</option>
+            <option value="$$">$$ Médio</option>
+            <option value="$$$">$$$ Alto</option>
+          </select>
+        </div>
+      </div>
+      <div class="disc-go-row">
+        <button class="disc-go" onclick="goDiscover()">
+          <span>Descobrir</span>
+          <span class="go-arr">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- MARQUEE -->
 <div class="marquee-strip"><div class="marquee-inner" id="marqueeInner"></div></div>
 
-<section class="how" id="como-funciona">
+<!-- RESULTS -->
+<section id="results-section">
+  <div class="results-header">
+    <div>
+      <div class="results-eyebrow" id="resultsEyebrow">Resultados</div>
+      <h2 class="results-title" id="resultsTitle">Encontre seu <em>próximo lugar</em></h2>
+    </div>
+    <span class="results-count" id="resultsCount"></span>
+  </div>
+  <div class="places-grid" id="placesGrid"></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="como">
   <div>
-    <div class="section-label reveal">Como funciona</div>
-    <h2 class="section-title reveal">Simples assim: <em>encontre</em>, planeje e aproveite.</h2>
+    <div class="ey reveal">Como funciona</div>
+    <h2 class="sec-title reveal">Simples: <em>escolha</em>,<br>descubra e viva.</h2>
     <div class="how-steps">
-      <div class="how-step reveal"><div class="how-step-num">1</div><div class="how-step-body"><h4>Diga o que voce quer viver</h4><p>Uma saida em familia, um date especial, um happy hour ou um momento solo - o find' entende o seu momento.</p></div></div>
-      <div class="how-step reveal"><div class="how-step-num">2</div><div class="how-step-body"><h4>Receba sugestoes com curadoria real</h4><p>Nada de lista generica. Cada recomendacao e validada por quem realmente foi la e viveu a experiencia.</p></div></div>
-      <div class="how-step reveal"><div class="how-step-num">3</div><div class="how-step-body"><h4>Planeje tudo em um so lugar</h4><p>Localizacao, preco, como chegar, horarios e detalhes que fazem a diferenca - organizados pra voce.</p></div></div>
-      <div class="how-step reveal"><div class="how-step-num">4</div><div class="how-step-body"><h4>Viva e compartilhe</h4><p>Depois de viver a experiencia, deixe sua avaliacao e ajude mais pessoas a descobrirem SP.</p></div></div>
+      <div class="how-step reveal"><div class="how-step-num">1</div><div class="how-step-body"><h4>Diga o que quer viver</h4><p>Selecione a categoria e o momento — date, amigos, aniversário — e o find' filtra pra você.</p></div></div>
+      <div class="how-step reveal"><div class="how-step-num">2</div><div class="how-step-body"><h4>Receba sugestões com curadoria</h4><p>Nada de lista genérica. Cada recomendação foi validada por quem realmente foi lá.</p></div></div>
+      <div class="how-step reveal"><div class="how-step-num">3</div><div class="how-step-body"><h4>Veja tudo antes de ir</h4><p>Localização, preço, metrô, estacionamento e acessibilidade — organizados pra decidir rápido.</p></div></div>
+      <div class="how-step reveal"><div class="how-step-num">4</div><div class="how-step-body"><h4>Avalie e compartilhe</h4><p>Sua avaliação ajuda a próxima pessoa a encontrar o lugar certo.</p></div></div>
     </div>
   </div>
   <div class="how-visual">
     <div class="chat-bubble">Eii galera! 👋</div>
-    <div class="chat-bubble">Qual o role desse find'? 🎉</div>
-    <div class="chat-bubble right">find' me mandou umas pedidas incriveis!</div>
-    <div class="chat-bubble">Vamos pro Ibirapuera antes do happy hour? ✨</div>
-    <div class="how-visual-dots">
-      <div class="how-dot" style="background:#3A4FD6"></div>
-      <div class="how-dot" style="background:#2D7A3A"></div>
-      <div class="how-dot" style="background:#C8E84A"></div>
-      <div class="how-dot" style="background:#D45F3C"></div>
-      <div class="how-dot" style="background:#C83B2A"></div>
+    <div class="chat-bubble">Qual o rolê esse fim de semana? 🎉</div>
+    <div class="chat-bubble r">find' me mandou pedidas incríveis!</div>
+    <div class="chat-bubble">Restaurante + date no Ibirapuera? ✨</div>
+    <div class="how-vdots">
+      <div class="hvd" style="background:#3A4FD6"></div>
+      <div class="hvd" style="background:#2D7A3A"></div>
+      <div class="hvd" style="background:#C8E84A"></div>
+      <div class="hvd" style="background:#D45F3C"></div>
     </div>
   </div>
 </section>
 
-<section class="areas" id="areas">
-  <div class="areas-header">
-    <div>
-      <div class="section-label reveal">Areas de interesse</div>
-      <h2 class="section-title reveal">Explore por <em>categoria</em></h2>
-    </div>
-    <a href="#participe" class="btn-primary" style="white-space:nowrap;flex-shrink:0">Ver todas</a>
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="ey reveal">Quem já usou</div>
+  <h2 class="sec-title reveal">Experiências <em>reais</em></h2>
+  <div class="testi-grid" id="testiGrid"></div>
+</section>
+
+<!-- CTA + SURVEY -->
+<section class="cta-sec" id="participe">
+  <div class="ey">Faça parte</div>
+  <h2 class="cta-h">Encontre seu próximo <em>momento inesquecível</em></h2>
+  <p class="cta-p">O find' está sendo construído com a sua ajuda. Entre para a lista e seja um dos primeiros a explorar SP de um jeito novo.</p>
+  <div class="cta-acts">
+    <a href="#survey-form" class="cta-bw">Quero acesso antecipado</a>
+    <a href="#discover" class="cta-bo">Explorar agora</a>
   </div>
-  <div class="cards-grid" id="areasGrid"></div>
+  <div class="survey-wrap" id="survey-form">
+    <div class="survey-t">Ajude a construir o find'</div>
+    <div class="survey-s">3 perguntas rápidas para entrar na lista de acesso antecipado</div>
+    <div class="survey-q">O que você mais quer descobrir em SP?</div>
+    <div class="survey-opts" id="sq1"></div>
+    <div class="survey-q">Com quem você costuma sair?</div>
+    <div class="survey-opts" id="sq2"></div>
+    <div class="survey-q">Data de nascimento</div>
+    <input class="sinp" type="date" id="sDob" max="">
+    <div class="survey-q">Seu bairro</div>
+    <input class="sinp" placeholder="Ex: Pinheiros, Mooca, Itaim..." id="sBairro">
+    <div class="survey-q">Seu e-mail</div>
+    <input class="sinp" type="email" placeholder="seuemail@exemplo.com" id="sEmail">
+    <button class="ssubmit" onclick="submitSurvey()">Quero acesso antecipado ✨</button>
+  </div>
+  <div class="cta-bglogo">find'</div>
 </section>
 
-<section class="map-section" id="mapa">
-  <div class="section-label reveal">Sao Paulo toda</div>
-  <h2 class="section-title reveal">A cidade inteira <em>mapeada</em> pra voce</h2>
-  <div class="map-content">
-    <div class="map-text reveal">
-      <p>Do Ibirapuera a Vila Madalena, do centro historico aos bairros mais badalados - o find' cobre todas as regioes de Sao Paulo com informacoes completas, reais e sempre atualizadas.</p>
-      <div class="map-feats">
-        <div class="map-feat"><div class="mf-dot" style="background:#3A4FD6"></div>Cultura e Museus - MASP, IMS, Tomie Otake</div>
-        <div class="map-feat"><div class="mf-dot" style="background:#2D7A3A"></div>Parques - Ibirapuera, Villa-Lobos, Juventude</div>
-        <div class="map-feat"><div class="mf-dot" style="background:#C8E84A"></div>Gastronomia - dos botecos as novas aberturas</div>
-        <div class="map-feat"><div class="mf-dot" style="background:#D45F3C"></div>Experiencias criativas - ateliers e workshops</div>
-        <div class="map-feat"><div class="mf-dot" style="background:#C83B2A"></div>Bem-estar - spas, yoga, pilates e muito mais</div>
-      </div>
-    </div>
-    <div class="map-visual-box reveal" id="mapBox"></div>
+<!-- SOBRE / QUEM SOMOS -->
+<section class="sobre-section" id="sobre">
+  <h2 class="sec-title reveal">Quem <em>somos</em></h2>
+  <div class="sobre-text reveal" style="margin-top:32px;max-width:640px">
+    <p>O <strong>find'</strong> surgiu a partir de um Trabalho de Conclusão de Curso desenvolvido por 7 estudantes de Comunicação Social — Publicidade e Propaganda da <strong>ESPM</strong> (Escola Superior de Propaganda e Marketing), em São Paulo.</p>
+    <p>O projeto nasceu para resolver um problema que a gente mesmo vivia: a busca por experiências de lazer em São Paulo é fragmentada entre vários apps, sem curadoria confiável e sem informação prática centralizada. A partir de pesquisa de mercado e validação com consumidores reais, o TCC evoluiu para um plano de negócio completo — e agora está se tornando realidade.</p>
+    <p>Hoje seguimos com a mesma missão: centralizar descoberta, avaliações verificadas e informação prática num só lugar, para que você decida mais rápido onde viver o seu próximo momento em SP.</p>
   </div>
 </section>
 
-<section class="occasions" id="ocasioes">
-  <div class="section-label reveal">Ocasioes</div>
-  <h2 class="section-title reveal">Qual e o seu <em>momento?</em></h2>
-  <div class="occasions-grid" id="occasionsGrid"></div>
-</section>
-
-<section class="benefits" id="beneficios">
-  <div style="text-align:center;max-width:600px;margin:0 auto">
-    <div class="section-label reveal">Por que o find'?</div>
-    <h2 class="section-title reveal" style="margin:0 auto">Tudo que voce precisa pra <em>decidir</em></h2>
-  </div>
-  <div class="benefits-grid" id="benefitsGrid"></div>
-</section>
-
-<section class="testimonials" id="depoimentos">
-  <div class="section-label reveal">Quem ja usou</div>
-  <h2 class="section-title reveal">Experiencias <em>reais</em>, pessoas reais</h2>
-  <div class="testimonials-grid" id="testimonialsGrid"></div>
-</section>
-
-<section class="cta-section" id="participe">
-  <div class="section-label">Faca parte</div>
-  <h2 class="cta-title">Encontre seu proximo <em>momento inesquecivel</em></h2>
-  <p class="cta-sub">O find' esta sendo construido com a sua ajuda. Participe da comunidade e ajude a moldar a plataforma que vai transformar como Sao Paulo descobre lazer.</p>
-  <div class="cta-actions">
-    <a href="#survey-form" class="cta-btn-w">Quero testar o find'</a>
-    <a href="#areas" class="cta-btn-o">Explorar experiencias</a>
-  </div>
-  <div class="survey-inner" id="survey-form">
-    <div class="survey-title">Ajude a construir o find'</div>
-    <div class="survey-sub">Responda 3 perguntas rapidas e entre para a lista de acesso antecipado</div>
-    <div class="survey-q">O que voce mais quer descobrir em SP?</div>
-    <div class="survey-options" id="q1"></div>
-    <div class="survey-q">Com quem voce costuma sair?</div>
-    <div class="survey-options" id="q2"></div>
-    <div class="survey-q">Qual seu bairro?</div>
-    <input class="survey-input" placeholder="Ex: Vila Madalena, Pinheiros, Mooca..." id="neighborhoodInput">
-    <div class="survey-q">Seu e-mail para acesso antecipado</div>
-    <input class="survey-input" type="email" placeholder="seuemail@exemplo.com" id="emailInput">
-    <button class="survey-submit" onclick="submitSurvey()">Quero acesso antecipado ✨</button>
-  </div>
-  <div class="cta-bg-logo">find'</div>
-</section>
-
+<!-- FOOTER -->
 <footer>
-  <div class="footer-brand">
-    <span class="f-logo">find<span style="font-style:italic">'</span></span>
-    <p>Facilitando a descoberta de experiencias e conexoes em Sao Paulo.</p>
+  <div class="fbrand">
+    <span class="flogo">find<span style="font-style:italic">'</span></span>
+    <p>Facilitando a descoberta de experiências e conexões em São Paulo.</p>
+    <p style="margin-top:14px"><a href="mailto:appfindsp@gmail.com" style="color:rgba(245,240,232,.55);text-decoration:none">appfindsp@gmail.com</a></p>
   </div>
-  <div class="footer-col">
-    <h5>Explorar</h5>
-    <a href="#areas">Areas</a>
-    <a href="#ocasioes">Ocasioes</a>
-    <a href="#mapa">Mapa</a>
-    <a href="#como-funciona">Como funciona</a>
-  </div>
-  <div class="footer-col">
-    <h5>Empresa</h5>
-    <a href="#">Quem somos</a>
-    <a href="#">Blog</a>
-    <a href="#">Imprensa</a>
-    <a href="#">Parcerias</a>
-  </div>
-  <div class="footer-col">
-    <h5>Suporte</h5>
-    <a href="#">Contato</a>
-    <a href="#">Privacidade</a>
-    <a href="#">Termos de uso</a>
-  </div>
-  <div class="footer-bottom">
-    <span>2025 find' - Sao Paulo, SP</span>
-    <div class="footer-social">
-      <a href="#">Instagram</a>
-      <a href="#">LinkedIn</a>
-      <a href="#">TikTok</a>
-    </div>
-  </div>
+  <div class="fcol"><h5>Explorar</h5><a href="#discover">Descobrir</a></div>
+  <div class="fcol"><h5>Empresa</h5><a href="#sobre">Quem somos</a></div>
+  <div class="fbot"><span>© 2025 find' — São Paulo, SP</span><div class="fsoc"><a href="https://www.instagram.com/_findsp?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a></div></div>
 </footer>
 
+<!-- PLACE PROFILE MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-hero" id="modalHero">
+      <div class="modal-hero-overlay"></div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      <div class="modal-hero-content">
+        <div class="modal-hero-badge" id="mBadge"></div>
+        <div class="modal-name" id="mName"></div>
+        <div class="modal-tagline" id="mTagline"></div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="modal-info-card">
+          <div class="modal-info-title">📍 Localização & Acesso</div>
+          <div id="mLocation"></div>
+        </div>
+        <div class="modal-info-card">
+          <div class="modal-info-title">ℹ️ Informações práticas</div>
+          <div id="mInfo"></div>
+        </div>
+      </div>
+      <div class="modal-section-title">Sobre o lugar</div>
+      <p id="mDesc" style="font-size:.9rem;line-height:1.75;color:rgba(26,32,53,.7);margin-bottom:20px"></p>
+      <div class="modal-tags" id="mTags"></div>
+
+      <!-- RATING SUMMARY -->
+      <div class="modal-section-title">Avaliações</div>
+      <div class="ratings-summary" id="mRatingSummary"></div>
+
+      <!-- REVIEW FORM -->
+      <div class="review-form">
+        <div class="review-form-title">Deixe sua avaliação</div>
+        <div class="star-picker" id="starPicker"></div>
+        <textarea class="review-textarea" id="reviewText" placeholder="Conte como foi sua experiência..."></textarea>
+        <br><button class="review-submit" onclick="submitReview()">Publicar avaliação</button>
+      </div>
+
+      <!-- COMMENTS -->
+      <div class="modal-section-title" style="margin-top:24px">Comentários</div>
+      <div id="mComments"></div>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div id="popup-overlay">
+  <div class="popup-box">
+    <div class="popup-top">
+      <div class="ptdots" id="ptdots"></div>
+      <button class="pclose" onclick="closePopup()">✕</button>
+      <div class="plogo">find<em>'</em></div>
+      <div class="phead">Acesso antecipado<br>exclusivo para SP 🗺️</div>
+      <div class="psub">Seja dos primeiros a descobrir a plataforma que vai mudar como você vive a cidade.</div>
+    </div>
+    <div class="popup-body" id="popupBody">
+      <div class="plbl">Seu nome</div>
+      <input class="pinp" id="popName" placeholder="Como posso te chamar?">
+      <div class="plbl">Seu e-mail</div>
+      <input class="pinp" type="email" id="popEmail" placeholder="seuemail@exemplo.com">
+      <div class="plbl">Data de nascimento</div>
+      <input class="pinp" type="date" id="popDob" max="">
+      <div class="plbl" style="margin-bottom:9px">O que você mais curte?</div>
+      <div class="pchips" id="pchips"></div>
+      <label class="pcheck">
+        <input type="checkbox" id="popNotif" checked>
+        <span>Quero receber notificações sobre novidades, promoções e sugestões personalizadas</span>
+      </label>
+      <button class="pbtn" onclick="submitPopup()">Quero acesso antecipado ✨</button>
+      <button class="pskip" onclick="closePopup()">Agora não, obrigado</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN FAB -->
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="ahd">
+    <div class="ahd-l"><div class="alogo">find' admin</div><div class="atitle">Painel de Leads</div></div>
+    <button class="aclose" onclick="closeAdmin()">✕</button>
+  </div>
+  <div class="abody">
+    <div class="astats" id="adminStats"></div>
+    <div class="atw">
+      <div class="ath"><h3>Todos os leads</h3><div class="aacts"><button class="aexp" onclick="exportCSV()">⬇ Exportar CSV</button><button class="aclr" onclick="clearLeads()">🗑 Limpar</button></div></div>
+      <div id="adminTable"></div>
+    </div>
+  </div>
+</div>
+
 <script>
+// ── GOOGLE PLACES PHOTOS (automático) ──
+// 1) Crie um projeto no Google Cloud Console, ative a "Places API" (legada) e o faturamento.
+// 2) Gere uma chave de API e restrinja por "referenciadores HTTP" (seu domínio) para evitar uso indevido.
+// 3) Cole a chave abaixo. Sem chave, o site usa as imagens de placeholder normalmente.
+const GOOGLE_MAPS_API_KEY = 'COLE_SUA_CHAVE_DA_GOOGLE_PLACES_API_AQUI';
+
+let placesService = null;
+function loadGoogleMaps(){
+  if(!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.indexOf('COLE_SUA_CHAVE') === 0){
+    console.warn('[find\'] Chave da Google Places API não configurada — usando imagens de placeholder.');
+    return;
+  }
+  const script=document.createElement('script');
+  script.src=`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=onGoogleMapsLoaded`;
+  script.async=true;
+  document.head.appendChild(script);
+}
+window.onGoogleMapsLoaded=function(){
+  const dummyMap=new google.maps.Map(document.createElement('div'));
+  placesService=new google.maps.places.PlacesService(dummyMap);
+  document.dispatchEvent(new Event('gmaps-ready'));
+};
+loadGoogleMaps();
+
+const GOOGLE_PHOTO_CACHE_KEY='find_google_photo_cache_v1';
+function getPhotoCache(){ try{return JSON.parse(localStorage.getItem(GOOGLE_PHOTO_CACHE_KEY)||'{}')}catch{return{}} }
+function savePhotoCache(c){ try{localStorage.setItem(GOOGLE_PHOTO_CACHE_KEY,JSON.stringify(c))}catch{} }
+
+// Busca a foto real do Google para um lugar e chama onFound(url) quando encontrar.
+// Resultado fica em cache no navegador (localStorage) para não repetir a busca sempre.
+function fetchGooglePhoto(place, onFound){
+  const cache=getPhotoCache();
+  if(cache[place.id]){ onFound(cache[place.id]); return; }
+  if(!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.indexOf('COLE_SUA_CHAVE') === 0) return;
+  if(!placesService){ document.addEventListener('gmaps-ready',()=>fetchGooglePhoto(place,onFound),{once:true}); return; }
+  const query=`${place.name}, ${place.loc}`;
+  placesService.findPlaceFromQuery({query,fields:['place_id','photos']},(results,status)=>{
+    if(status===google.maps.places.PlacesServiceStatus.OK && results && results[0] && results[0].photos && results[0].photos.length){
+      const url=results[0].photos[0].getUrl({maxWidth:800});
+      cache[place.id]=url; savePhotoCache(cache);
+      onFound(url);
+    } else {
+      cache[place.id]=place.img; savePhotoCache(cache); // evita tentar de novo a cada load
+    }
+  });
+}
+
+// ── DATA ──
 const DC=['#3A4FD6','#2D7A3A','#C8E84A','#1A2035','#D45F3C','#C83B2A'];
-window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>60));
-const hd=document.getElementById('heroDots');
-for(let i=0;i<42;i++){const d=document.createElement('div');d.className='dot';const s=Math.random()*18+6;d.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:${DC[Math.floor(Math.random()*6)]};opacity:${Math.random()*.4+.1};animation-delay:${Math.random()*6}s;animation-duration:${Math.random()*6+5}s`;hd.appendChild(d)}
-const pl=['Parque Ibirapuera','MASP','Vila Madalena','Pinacoteca','Mercadao','Av. Paulista','Tomie Otake','IMS','Praca das Artes','Parque Villa-Lobos','Centro Cultural SP','Museu da Lingua'];
+
+const PLACES = {
+  bares:[
+                      {id:'b6',img:'https://picsum.photos/seed/find-b6/600/450',name:'Tan Tan',tagline:'Point de música eletrônica em Pinheiros',desc:'Bar de Pinheiros com clima intimista e trilha eletrônica/rock baixo tocando a noite toda. A carta de drinques muda com as estações, então sempre tem novidade para experimentar.',price:'$$',priceLabel:'Médio',category:'bares',tags:['Eletrônica','Carta sazonal','Pinheiros'],rating:4.5,reviews:76,loc:'R. Fradique Coutinho, 153 — Pinheiros',metro:'Metrô Fradique Coutinho (~300m)',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Fradique Coutinho (Linha 4-Amarela)',moments:['amigos']},
+{id:'b7',img:'https://picsum.photos/seed/find-b7/600/450',name:'Valentina Bar',tagline:'Funk e eletrônica para curtir com a turma',desc:'Bar de esquina em Pinheiros com programação ao vivo de quarta a sábado, som de funk e eletrônica e clima animado — ótimo para reunir a galera num aniversário.',price:'$$',priceLabel:'Médio',category:'bares',tags:['Funk','Eletrônica','Programação ao vivo'],rating:4.4,reviews:64,loc:'R. Padre João Gonçalves, 160 — Pinheiros',metro:'Ônibus na Rua Inácio Pereira da Rocha, 147',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Ônibus (Rua Inácio Pereira da Rocha, 147)',moments:['aniversario']},
+{id:'b8',img:'https://picsum.photos/seed/find-b8/600/450',name:'Bar no Naga',tagline:'Bar japonês com pista e DJ no Itaim',desc:'Combinação de bar japonês com DJ ao vivo no coração do Itaim Bibi. Ambiente descolado, ótimo para curtir com os amigos até tarde.',price:'$$$',priceLabel:'Alto',category:'bares',tags:['Japonês','DJ','Eletrônica','Itaim'],rating:4.7,reviews:98,loc:'R. Bandeira Paulista, 392 — Itaim Bibi',metro:'—',parking:'Estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Sem transporte público próximo',moments:['amigos']},
+{id:'b9',img:'https://picsum.photos/seed/find-b9/600/450',name:'Toalha Café Bar',tagline:'Café de dia, bar eclético à noite',desc:'Na Vila Buarque, une café de dia a bar eclético à noite, com sets que passeiam por house, disco, funk e jazz. Funciona de terça a domingo.',price:'$$',priceLabel:'Médio',category:'bares',tags:['House','Disco','Funk','Jazz'],rating:4.4,reviews:71,loc:'R. Maj. Sertório, 318 — Vila Buarque, Centro',metro:'Metrô República + ônibus (Rua Major Sertório, 295)',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô República (Linha Amarela) ou ônibus',moments:['amigos']},
+{id:'b10',img:'https://picsum.photos/seed/find-b10/600/450',name:'Flora Bar',tagline:'Jazz ao vivo nos Jardins',desc:'Bar de clima intimista nos Jardins com trilha de jazz, ideal para uma noite a dois. Aberto de segunda a sábado, das 19h à meia-noite.',price:'$$',priceLabel:'Médio',category:'bares',tags:['Jazz','Jardins','Clima intimista'],rating:4.0,reviews:52,loc:'Rua Padre João Manuel, 795 — Jardins',metro:'Trianon-MASP (Linha 2-Verde)',parking:'Estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Trianon-MASP (Linha 2-Verde)',moments:['date']},
+{id:'b11',img:'https://picsum.photos/seed/find-b11/600/450',name:'Sarau',tagline:'Bar na Vila Madalena/Pinheiros — dados em atualização',desc:'Bar na região de Pinheiros. Informações completas de cardápio e programação ainda estão sendo confirmadas — vale conferir o Instagram antes de ir.',price:'$$',priceLabel:'Médio',category:'bares',tags:['Pinheiros'],rating:4.3,reviews:30,loc:'R. Henrique Monteiro, 154 — Pinheiros',metro:'—',parking:'Sem informação',access:'Consulte acessibilidade no local',transport:'A confirmar',moments:['amigos']},
+{id:'b12',img:'https://picsum.photos/seed/find-b12/600/450',name:'Varal',tagline:'MPB e eletrônica ambiente em Pinheiros',desc:'Bar de Pinheiros com trilha que mistura MPB e eletrônica ambiente, clima aconchegante para um date com boa música de fundo.',price:'$$',priceLabel:'Médio',category:'bares',tags:['MPB','Eletrônica ambiente','Pinheiros'],rating:4.4,reviews:58,loc:'R. Artur de Azevedo, 636 — Pinheiros',metro:'Metrô Fradique Coutinho',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Fradique Coutinho (Linha 4-Amarela)',moments:['date']},
+{id:'b13',img:'https://picsum.photos/seed/find-b13/600/450',name:'Atlântico 212',tagline:'Lounge com música ambiente em Pinheiros',desc:'Bar lounge em Pinheiros com música ambiente e horário estendido, das 12h à 1h. Clima tranquilo, bom para conversar.',price:'$$$',priceLabel:'Alto',category:'bares',tags:['Lounge','Música ambiente','Horário estendido'],rating:4.3,reviews:40,loc:'R. dos Pinheiros, 70 — Pinheiros',metro:'Metrô Fradique Coutinho / Faria Lima',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Fradique Coutinho / Faria Lima',moments:['date']},
+{id:'b14',img:'https://picsum.photos/seed/find-b14/600/450',name:'Sala bar',tagline:'Listening bar em Pinheiros',desc:'Listening bar em Pinheiros com curadoria sonora entre house, disco, jazz e MPB. Programação musical de quarta a sábado.',price:'$$',priceLabel:'Médio',category:'bares',tags:['Listening Bar','House','Disco','Jazz'],rating:4.3,reviews:35,loc:'R. Fernão Dias, 767 — Pinheiros',metro:'Metrô Fradique Coutinho / Faria Lima',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Fradique Coutinho / Faria Lima',moments:['date']},
+{id:'b15',img:'https://picsum.photos/seed/find-b15/600/450',name:'Cortina',tagline:'Bar para um date — dados em atualização',desc:'Bar indicado para date. Endereço e demais informações ainda estão sendo confirmados — atualize antes de divulgar.',price:'$$',priceLabel:'Médio',category:'bares',tags:['Date'],rating:4.3,reviews:25,loc:'Endereço a confirmar',metro:'—',parking:'Sem informação',access:'Consulte acessibilidade no local',transport:'A confirmar',moments:['date']},
+{id:'b16',img:'https://picsum.photos/seed/find-b16/600/450',name:'Matiz',tagline:'Rooftop & listening bar',desc:'Rooftop e listening bar para curtir com os amigos. Endereço e demais informações ainda estão sendo confirmados.',price:'$$$',priceLabel:'Alto',category:'bares',tags:['Rooftop','Listening Bar'],rating:4.4,reviews:30,loc:'Endereço a confirmar',metro:'—',parking:'Sem informação',access:'Consulte acessibilidade no local',transport:'A confirmar',moments:['amigos']},
+  ],
+  restaurantes:[
+                      {id:'r6',img:'https://picsum.photos/seed/find-r6/600/450',name:'Marmotta Pasta Bar',tagline:'Massas autorais no Itaim Bibi',desc:'Pasta bar no Itaim Bibi com cardápio autoral de massas. Ambiente descontraído, sem música ao vivo, ideal para um jantar informal.',price:'$$',priceLabel:'Médio',category:'restaurantes',tags:['Massas','Itaim Bibi'],rating:3.7,reviews:40,loc:'R. Manuel Guedes, 281 — Itaim Bibi',metro:'—',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Sem transporte público próximo indicado',moments:['amigos','date']},
+{id:'r7',img:'https://picsum.photos/seed/find-r7/600/450',name:'SEEN',tagline:'Jazz e pop na Jardim Paulista',desc:'Restaurante-bar na Jardim Paulista com programação musical ao vivo transitando entre jazz e pop. Público majoritariamente 25+.',price:'$$$',priceLabel:'Alto',category:'restaurantes',tags:['Jazz','Pop','Programação ao vivo'],rating:4.4,reviews:55,loc:'Alameda Santos, 1437 — Jardim Paulista',metro:'Metrô próximo',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô',moments:['date','amigos']},
+{id:'r8',img:'https://picsum.photos/seed/find-r8/600/450',name:'A Casa do Porco Bar',tagline:'Clássico da República — dados em atualização',desc:'Casa conhecida na região da República. Demais informações (cardápio, horários, preços) ainda estão sendo confirmadas.',price:'$$',priceLabel:'Médio',category:'restaurantes',tags:['República'],rating:4.5,reviews:60,loc:'R. Araújo, 124 — República',metro:'—',parking:'Sem informação',access:'Consulte acessibilidade no local',transport:'A confirmar',moments:['amigos']},
+{id:'r9',img:'https://picsum.photos/seed/find-r9/600/450',name:'Terrazza Rooftop',tagline:'Rooftop no Real Parque para todos os públicos',desc:'Rooftop no Real Parque com horário estendido (11h30 até 1h ou 2h) e ambiente pensado para agradar de jovens a famílias e casais.',price:'$$$',priceLabel:'Alto',category:'restaurantes',tags:['Rooftop','Vista','Real Parque'],rating:4.2,reviews:48,loc:'R. Francisco Tramontano, 101 — Real Parque',metro:'—',parking:'Sem informação',access:'Consulte acessibilidade no local',transport:'A confirmar',moments:['amigos','date']},
+  ],
+  experiencias:[
+                      {id:'e6',img:'https://picsum.photos/seed/find-e6/600/450',name:'Tinta La Vida',tagline:'Ateliê de pintura em Moema',desc:'Ateliê de pintura em Moema com programação voltada a quem quer soltar a criatividade. Funciona de terça a domingo, das 10h às 22h.',price:'$$$',priceLabel:'Alto',category:'experiencias',tags:['Ateliê','Pintura','Moema'],rating:4.8,reviews:29,loc:'Av. Cotovia, 432 — Moema',metro:'Metrô Eucaliptos',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Eucaliptos',moments:['date','amigos']},
+{id:'e7',img:'https://picsum.photos/seed/find-e7/600/450',name:'Pinakotheke',tagline:'Galeria de arte gratuita em Higienópolis',desc:'Galeria de arte em Higienópolis com entrada gratuita, aberta de segunda a sábado. Boa opção para quem quer arte sem custo.',price:'$',priceLabel:'Gratuito',category:'experiencias',tags:['Galeria de arte','Gratuito','Higienópolis'],rating:4.8,reviews:167,loc:'R. Minas Gerais, 246 — Higienópolis',metro:'Metrô Paulista/Pernambucanas',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Paulista/Pernambucanas',moments:['date','amigos']},
+{id:'e8',img:'https://picsum.photos/seed/find-e8/600/450',name:'Casa Museu Ema Klabin',tagline:'Museu-residência no Jardim Europa',desc:'Casa-museu no Jardim Europa com visitação livre de quarta a domingo, das 11h às 17h. Acervo de arte, história e música erudita num ambiente raro em SP.',price:'$',priceLabel:'Acessível',category:'experiencias',tags:['Museu','Arte','Jardim Europa'],rating:4.7,reviews:60,loc:'Rua Portugal, 43 — Jardim Europa',metro:'Metrô Faria Lima (15–17min a pé)',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Faria Lima (Linha 4-Amarela) e ônibus na Av. Europa/Faria Lima',moments:['date','amigos']},
+{id:'e9',img:'https://picsum.photos/seed/find-e9/600/450',name:'Nubank Arte Lab — O Brasil de Tarsila',tagline:'Exposição imersiva sobre Tarsila do Amaral',desc:'Exposição no Conjunto Nacional, na Av. Paulista, dedicada à obra de Tarsila do Amaral. Aberta de quarta a segunda e feriados, das 10h às 22h.',price:'$$',priceLabel:'Médio',category:'experiencias',tags:['Exposição','Tarsila do Amaral','Bela Vista'],rating:4.1,reviews:38,loc:'Av. Paulista, 2073 (Conjunto Nacional) — Bela Vista',metro:'Metrô Consolação',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Consolação',moments:['date','amigos']},
+{id:'e10',img:'https://picsum.photos/seed/find-e10/600/450',name:'Farol Santander',tagline:'Mirante e exposições no Centro Histórico',desc:'Prédio histórico no Centro com mirante, exposições temáticas e gastronomia. Aberto de terça a domingo, das 9h às 20h — fechado às segundas.',price:'$$',priceLabel:'Médio',category:'experiencias',tags:['Mirante','Exposições','Centro Histórico'],rating:4.4,reviews:90,loc:'Rua João Brícola, 24 — Centro',metro:'Metrô São Bento',parking:'Estacionamentos pagos próximos',access:'Consulte acessibilidade no local',transport:'Metrô São Bento (Linha 1-Azul) e diversas linhas de ônibus',moments:['amigos','aniversario']},
+{id:'e11',img:'https://picsum.photos/seed/find-e11/600/450',name:'Instituto Tomie Ohtake',tagline:'Arte contemporânea gratuita em Pinheiros',desc:'Instituto de arte contemporânea em Pinheiros com entrada gratuita, exposições, oficinas, cursos e apresentações musicais. Terça a domingo, das 11h às 19h.',price:'$',priceLabel:'Gratuito',category:'experiencias',tags:['Arte contemporânea','Gratuito','Pinheiros'],rating:4.3,reviews:12167,loc:'Rua Coropé, 88 — Pinheiros',metro:'Metrô Faria Lima',parking:'Estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Metrô Faria Lima (Linha 4-Amarela)',moments:['date','amigos']},
+{id:'e12',img:'https://picsum.photos/seed/find-e12/600/450',name:'MASP',tagline:'O museu mais icônico da Av. Paulista',desc:'O Museu de Arte de São Paulo, na Av. Paulista, com horários que variam por dia — terça até as 20h, sexta até as 21h. Menores de 14 anos precisam de acompanhante.',price:'$$',priceLabel:'Médio',category:'experiencias',tags:['Museu de arte','Av. Paulista','Ícone cultural'],rating:4.7,reviews:200,loc:'Av. Paulista, 1578 — Bela Vista',metro:'Metrô Trianon-MASP',parking:'Conveniado com Car Park e Estapar (desconto na bilheteria)',access:'Consulte acessibilidade no local',transport:'Metrô Trianon-MASP (Linha 2-Verde)',moments:['date','amigos','aniversario']},
+{id:'e13',img:'https://picsum.photos/seed/find-e13/600/450',name:'Bibla',tagline:'Livraria com clube do livro em Vila Madalena',desc:'Livraria entre Alto de Pinheiros e Vila Madalena com programação cultural intensa: clube do livro, lançamentos, autógrafos, rodas de conversa e oficinas.',price:'$$',priceLabel:'Médio',category:'experiencias',tags:['Livraria','Clube do livro','Eventos culturais'],rating:4.5,reviews:580,loc:'Praça Professora Emília Barbosa Lima, 58 — Vila Madalena',metro:'Sem metrô próximo indicado',parking:'Sem estacionamento próprio',access:'Consulte acessibilidade no local',transport:'Sem transporte público próximo indicado',moments:['date','amigos']},
+  ]
+};
+
+// flatten all
+const ALL_PLACES = [...PLACES.bares,...PLACES.restaurantes,...PLACES.experiencias];
+
+// ── STATE ──
+let selCat = null, selMom = null, selZone = null, selPrice = null, currentPlace = null, pickedStar = 0;
+const REVIEWS_KEY = 'find_reviews';
+const LEADS_KEY = 'find_leads';
+const FAVS_KEY = 'find_favorites';
+
+function getFavs(){ try{return JSON.parse(localStorage.getItem(FAVS_KEY)||'[]')}catch{return[]} }
+function saveFavs(f){ localStorage.setItem(FAVS_KEY,JSON.stringify(f)) }
+function isFav(pid){ return getFavs().includes(pid) }
+function toggleFav(pid,el){
+  let f=getFavs();
+  if(f.includes(pid)){ f=f.filter(x=>x!==pid) } else { f.push(pid) }
+  saveFavs(f);
+  if(el){ el.classList.toggle('on',f.includes(pid)); el.textContent=f.includes(pid)?'♥':'♡'; }
+}
+
+function getReviews(pid){ try{return JSON.parse(localStorage.getItem(REVIEWS_KEY+'_'+pid)||'[]')}catch{return[]} }
+function saveReview(pid,r){ const rs=getReviews(pid); rs.unshift(r); localStorage.setItem(REVIEWS_KEY+'_'+pid,JSON.stringify(rs)) }
+function getLeads(){ try{return JSON.parse(localStorage.getItem(LEADS_KEY)||'[]')}catch{return[]} }
+function saveLeads(l){ localStorage.setItem(LEADS_KEY,JSON.stringify(l)) }
+function addLead(lead){ const ls=getLeads(); lead.id=Date.now(); lead.date=new Date().toLocaleString('pt-BR'); ls.unshift(lead); saveLeads(ls); updateFabCount() }
+function updateFabCount(){ const el=document.getElementById('fabCount'); if(el) el.textContent=getLeads().length }
+
+// ── HERO DOTS ──
+const hbd=document.getElementById('heroBgDots');
+for(let i=0;i<44;i++){const d=document.createElement('div');d.className='d';const s=Math.random()*18+5;d.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:${DC[Math.floor(Math.random()*6)]};opacity:${Math.random()*.35+.08};animation-delay:${Math.random()*7}s;animation-duration:${Math.random()*6+6}s`;hbd.appendChild(d)}
+
+// ── MARQUEE ──
+const places_mq=['Parque Ibirapuera','MASP','Vila Madalena','Pinacoteca','Av. Paulista','Tomie Otake','IMS','Mercadão','Parque Villa-Lobos','Centro Cultural SP'];
 const mi=document.getElementById('marqueeInner');
-const mk=()=>pl.map(p=>`<span>${p}</span><span class="sep">·</span>`).join('');
+const mk=()=>places_mq.map(p=>`<span>${p}</span><span class="sep">·</span>`).join('');
 mi.innerHTML=mk()+mk()+mk()+mk();
-const areas=[
-  {title:'Passeios Culturais',sub:'Museus, galerias e teatros',icon:'🎨',color:'#1A2035',dots:['#3A4FD6','#C8E84A','#2D7A3A','#C83B2A'],tag:'125 lugares'},
-  {title:'Restaurantes',sub:'Da feijoada ao fine dining',icon:'🍽️',color:'#D45F3C',dots:['#C8E84A','#1A2035','#2D7A3A','#C83B2A'],tag:'340+ opcoes'},
-  {title:'Bem-estar',sub:'Spas, yoga e natureza',icon:'🌿',color:'#2D7A3A',dots:['#C8E84A','#3A4FD6','#1A2035','#D45F3C'],tag:'88 lugares'},
-  {title:'Experiencias Criativas',sub:'Ceramica, pintura, culinaria',icon:'✏️',color:'#3A4FD6',dots:['#C8E84A','#D45F3C','#2D7A3A','#C83B2A'],tag:'60 workshops'},
-  {title:'Parques & Natureza',sub:'Ao ar livre em SP',icon:'🌳',color:'#1A2035',dots:['#C8E84A','#3A4FD6','#D45F3C','#2D7A3A'],tag:'42 parques'},
-  {title:'Vida Noturna',sub:'Bares, shows e clubs',icon:'🎵',color:'#C83B2A',dots:['#C8E84A','#1A2035','#3A4FD6','#D45F3C'],tag:'200+ bares'},
-  {title:'Compras & Feiras',sub:'Feiras livres e boutiques',icon:'🛍️',color:'#1A2035',dots:['#D45F3C','#C8E84A','#2D7A3A','#3A4FD6'],tag:'70 destinos'},
-  {title:'Gastronomia Afetiva',sub:'Boteco, padaria e saudade',icon:'☕',color:'#D45F3C',dots:['#1A2035','#3A4FD6','#2D7A3A','#C8E84A'],tag:'150 lugares'},
+
+// ── NAV ──
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>60));
+
+// ── DISCOVERY ──
+function selectCat(btn){
+  const already=btn.classList.contains('active-cat');
+  document.querySelectorAll('#catBtns .disc-btn').forEach(b=>b.classList.remove('active-cat'));
+  if(already){ selCat=null; return; }
+  btn.classList.add('active-cat');
+  selCat=btn.dataset.cat;
+}
+function selectMom(btn){
+  const already=btn.classList.contains('active-mom');
+  document.querySelectorAll('#momBtns .disc-btn').forEach(b=>b.classList.remove('active-mom'));
+  if(already){ selMom=null; return; }
+  btn.classList.add('active-mom');
+  selMom=btn.dataset.mom;
+}
+const ZONE_MAP={'Pinheiros':'Zona Oeste','Vila Madalena':'Zona Oeste','Itaim Bibi':'Zona Oeste','Itaim':'Zona Oeste','Jardins':'Zona Oeste','Jardim Paulista':'Zona Oeste','Perdizes':'Zona Oeste','Bela Vista':'Centro','Liberdade':'Centro','Centro Histórico':'Centro','Santo Amaro':'Zona Sul'};
+function getZone(loc){
+  const bairro=(loc.split('—')[1]||'').trim();
+  for(const k in ZONE_MAP){ if(bairro.includes(k)) return ZONE_MAP[k]; }
+  return 'Outras regiões';
+}
+function goDiscover(){
+  selZone=document.getElementById('zoneSelect').value||null;
+  selPrice=document.getElementById('priceSelect').value||null;
+  let filtered=ALL_PLACES;
+  if(selCat) filtered=filtered.filter(p=>p.category===selCat);
+  if(selMom) filtered=filtered.filter(p=>p.moments.includes(selMom));
+  if(selZone) filtered=filtered.filter(p=>getZone(p.loc)===selZone);
+  if(selPrice) filtered=filtered.filter(p=>p.price===selPrice);
+  if(!filtered.length) filtered=ALL_PLACES.slice(0,6);
+  renderResults(filtered);
+  const rs=document.getElementById('results-section');
+  rs.classList.add('visible');
+  setTimeout(()=>rs.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+// ── RENDER RESULTS ──
+function renderResults(list){
+  const catLabel={'bares':'Bares','restaurantes':'Restaurantes','experiencias':'Experiências'}[selCat]||'Todos';
+  const momLabel={'date':'Date','aniversario':'Aniversário','amigos':'Rolê com amigos'}[selMom]||'';
+  document.getElementById('resultsEyebrow').textContent=momLabel?`${catLabel} · ${momLabel}`:catLabel;
+  document.getElementById('resultsTitle').innerHTML=`${list.length} lugares encontrados`;
+  document.getElementById('resultsCount').textContent=`${list.length} resultado${list.length!==1?'s':''}`;
+  const grid=document.getElementById('placesGrid');
+  grid.innerHTML='';
+  list.forEach((p,i)=>{
+    const rs=getReviews(p.id);
+    const avgR=rs.length?( rs.reduce((a,r)=>a+r.stars,0)/rs.length).toFixed(1):p.rating;
+    const totalR=rs.length+p.reviews;
+    const card=document.createElement('div');
+    card.className='place-card';
+    card.style.animationDelay=i*0.08+'s';
+    card.innerHTML=`
+      <div class="place-card-thumb" style="background-image:url('${p.img}')">
+        <div class="place-card-badge">${{'bares':'🍺 Bar','restaurantes':'🍽 Restaurante','experiencias':'✨ Experiência'}[p.category]}</div>
+        <button class="place-fav-btn ${isFav(p.id)?'on':''}" title="Favoritar" onclick="event.stopPropagation();toggleFav('${p.id}',this)">${isFav(p.id)?'♥':'♡'}</button>
+        <div class="place-card-price" title="Faixa de preço: ${p.priceLabel}">${p.price} · ${p.priceLabel}</div>
+      </div>
+      <div class="place-card-body">
+        <div class="place-card-name">${p.name}</div>
+        <div class="place-card-desc">${p.tagline}</div>
+        <div class="place-card-meta">
+          <span class="place-meta-tag">📍 ${p.loc.split('—')[1]?.trim()||p.loc}</span>
+          <span class="place-meta-tag">🚇 ${p.metro.split('(')[0].trim()}</span>
+          <span class="place-meta-tag">💰 ${p.price}</span>
+        </div>
+      </div>
+      <div class="place-card-footer">
+        <div><span class="place-stars">${starsHTML(Math.round(avgR))}</span><span class="place-rating-num">${avgR} (${totalR})</span></div>
+        <span class="place-btn" onclick="openModal('${p.id}')">Ver perfil →</span>
+      </div>`;
+    grid.appendChild(card);
+    fetchGooglePhoto(p,url=>{
+      const thumb=card.querySelector('.place-card-thumb');
+      if(thumb) thumb.style.backgroundImage=`url('${url}')`;
+    });
+  });
+}
+
+function starsHTML(n){ return '★'.repeat(n)+'☆'.repeat(5-n) }
+function starsFullHTML(n){ return '★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n)) }
+
+// ── MODAL ──
+function openModal(pid){
+  const p=ALL_PLACES.find(x=>x.id===pid);
+  if(!p) return;
+  currentPlace=p;
+  pickedStar=0;
+
+  // hero
+  document.getElementById('modalHero').style.backgroundImage=`url('${p.img}')`;
+  fetchGooglePhoto(p,url=>{ document.getElementById('modalHero').style.backgroundImage=`url('${url}')`; });
+  document.getElementById('mBadge').textContent={'bares':'🍺 Bar','restaurantes':'🍽 Restaurante','experiencias':'✨ Experiência'}[p.category];
+  document.getElementById('mName').textContent=p.name;
+  document.getElementById('mTagline').textContent=p.tagline;
+
+  // location
+  document.getElementById('mLocation').innerHTML=`
+    <div class="modal-info-row"><div class="modal-info-icon">📍</div><div class="modal-info-text"><strong>Endereço</strong>${p.loc}</div></div>
+    <div class="modal-info-row"><div class="modal-info-icon">🚇</div><div class="modal-info-text"><strong>Metrô</strong>${p.metro}</div></div>
+    <div class="modal-info-row"><div class="modal-info-icon">🚌</div><div class="modal-info-text"><strong>Transporte</strong>${p.transport}</div></div>
+    <div class="modal-info-row"><div class="modal-info-icon">🅿️</div><div class="modal-info-text"><strong>Estacionamento</strong>${p.parking}</div></div>`;
+
+  // info
+  document.getElementById('mInfo').innerHTML=`
+    <div class="modal-info-row"><div class="modal-info-icon">💰</div><div class="modal-info-text"><strong>Faixa de preço</strong>${p.price} · ${p.priceLabel}</div></div>
+    <div class="modal-info-row"><div class="modal-info-icon">♿</div><div class="modal-info-text"><strong>Acessibilidade</strong>${p.access}</div></div>
+    <div class="modal-info-row"><div class="modal-info-icon">✨</div><div class="modal-info-text"><strong>Momentos ideais</strong>${p.moments.map(m=>({'date':'Date','aniversario':'Aniversário','amigos':'Com amigos'}[m])).join(', ')}</div></div>`;
+
+  document.getElementById('mDesc').textContent=p.desc;
+  document.getElementById('mTags').innerHTML=p.tags.map(t=>`<span class="modal-tag">${t}</span>`).join('');
+
+  // ratings
+  renderRatings(p);
+
+  // star picker
+  const sp=document.getElementById('starPicker');
+  sp.innerHTML='';
+  for(let i=1;i<=5;i++){
+    const s=document.createElement('span');
+    s.className='star-pick'; s.textContent='★'; s.dataset.v=i;
+    s.onclick=()=>{ pickedStar=i; sp.querySelectorAll('.star-pick').forEach((x,j)=>x.classList.toggle('lit',j<i)) };
+    sp.appendChild(s);
+  }
+  document.getElementById('reviewText').value='';
+
+  renderComments(p);
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function renderRatings(p){
+  const rs=getReviews(p.id);
+  const all=[...rs.map(r=>r.stars),...Array(p.reviews).fill(Math.round(p.rating))];
+  const avg=all.length?(all.reduce((a,b)=>a+b,0)/all.length).toFixed(1):p.rating;
+  const counts=[5,4,3,2,1].map(s=>({s,n:all.filter(x=>x===s).length}));
+  document.getElementById('mRatingSummary').innerHTML=`
+    <div style="text-align:center">
+      <div class="rating-big">${avg}</div>
+      <div class="rating-stars-big">${starsFullHTML(Math.round(avg))}</div>
+      <div class="rating-count">${all.length} avaliações</div>
+    </div>
+    <div class="rating-bars">
+      ${counts.map(c=>`<div class="rating-bar-row"><span class="rating-bar-lbl">${c.s}</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:${all.length?Math.round(c.n/all.length*100):0}%"></div></div><span class="rating-bar-pct">${all.length?Math.round(c.n/all.length*100):0}%</span></div>`).join('')}
+    </div>`;
+}
+
+function renderComments(p){
+  const rs=getReviews(p.id);
+  const staticComments=[
+    {name:'Ana P.',stars:5,text:'Lugar incrível! Fui no date e meu parceiro adorou. A vibe é perfeita.',color:'#3A4FD6'},
+    {name:'Rafael M.',stars:4,text:'Boa experiência no geral. O atendimento poderia ser um pouco mais rápido.',color:'#D45F3C'},
+  ];
+  const all=[...rs,...staticComments];
+  const cc=document.getElementById('mComments');
+  if(!all.length){cc.innerHTML='<p style="font-size:.85rem;opacity:.4;padding:16px 0">Nenhum comentário ainda. Seja o primeiro!</p>';return}
+  cc.innerHTML=all.map(r=>`
+    <div class="comment-card">
+      <div class="comment-header">
+        <div class="comment-author">
+          <div class="comment-avatar" style="background:${r.color||DC[Math.floor(Math.random()*6)]}">${r.name[0]}</div>
+          <div><div class="comment-name">${r.name}</div><div class="comment-date">${r.date||'há alguns dias'}</div></div>
+        </div>
+        <div class="comment-stars">${starsHTML(r.stars)}</div>
+      </div>
+      <div class="comment-text">${r.text}</div>
+    </div>`).join('');
+}
+
+function submitReview(){
+  if(!pickedStar){alert('Selecione uma nota de 1 a 5 ⭐');return}
+  const txt=document.getElementById('reviewText').value.trim();
+  if(!txt){alert('Escreva um comentário antes de publicar');return}
+  const r={name:'Você',stars:pickedStar,text:txt,date:'agora mesmo',color:'#2D7A3A'};
+  saveReview(currentPlace.id,r);
+  renderRatings(currentPlace);
+  renderComments(currentPlace);
+  pickedStar=0;
+  document.getElementById('starPicker').querySelectorAll('.star-pick').forEach(s=>s.classList.remove('lit'));
+  document.getElementById('reviewText').value='';
+  alert('Avaliação publicada! Obrigado 🎉');
+}
+
+function closeModal(e){ if(e.target===document.getElementById('modal-overlay')) closeModalDirect() }
+function closeModalDirect(){ document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow='' }
+
+// ── TESTIMONIALS ──
+const testis=[
+  {text:'O find mudou meu fim de semana. Em vez de ficar sem ideia, agora descubro coisas incríveis que nem sabia que existiam em SP.',name:'Juliana M.',role:'Pinheiros, SP',color:'#3A4FD6',stars:'★★★★★'},
+  {text:'Planejei o aniversário da minha mãe pelo find e foi perfeito. Tudo certinho: endereço, metrô, preço. Zero stress.',name:'Rafael S.',role:'Mooca, SP',color:'#D45F3C',stars:'★★★★★'},
+  {text:'Finalmente um app que entende São Paulo de verdade. Os reviews são genuínos e as sugestões batem com o que eu gosto.',name:'Camila A.',role:'Vila Madalena, SP',color:'#2D7A3A',stars:'★★★★★'},
 ];
-const ag=document.getElementById('areasGrid');
-areas.forEach(a=>{const c=document.createElement('div');c.className='area-card reveal';c.innerHTML=`<div class="area-card-bg" style="background:${a.color}"><div class="area-card-dots">${Array(22).fill(0).map(()=>`<div style="width:${Math.random()*12+6}px;height:${Math.random()*12+6}px;border-radius:50%;background:${a.dots[Math.floor(Math.random()*4)]};opacity:${Math.random()*.6+.2}"></div>`).join('')}</div></div><div class="area-card-content"><div class="area-card-icon">${a.icon}</div><div class="area-card-title">${a.title}</div><div class="area-card-sub">${a.sub}</div><span class="area-card-tag">${a.tag}</span></div>`;ag.appendChild(c)});
-const mb=document.getElementById('mapBox');
-[{x:52,y:62,color:'#2D7A3A',sizes:[40,70,100]},{x:18,y:38,color:'#3A4FD6',sizes:[30,55]}].forEach(r=>r.sizes.forEach((s,i)=>{const el=document.createElement('div');el.className='map-ring';el.style.cssText=`width:${s}px;height:${s}px;left:calc(${r.x}% - ${s/2}px);top:calc(${r.y}% - ${s/2}px);border-color:${r.color};animation-delay:${i*.5}s`;mb.appendChild(el)}));
-for(let i=0;i<32;i++){const d=document.createElement('div');const s=Math.random()*12+5;d.style.cssText=`position:absolute;width:${s}px;height:${s}px;border-radius:50%;left:${Math.random()*90+5}%;top:${Math.random()*85+5}%;background:${DC[Math.floor(Math.random()*6)]};opacity:${Math.random()*.5+.2}`;mb.appendChild(d)}
-[{name:'MASP',x:48,y:22,color:'#3A4FD6'},{name:'Av. Paulista',x:55,y:30,color:'#C83B2A'},{name:'Tomie Otake',x:28,y:18,color:'#D45F3C'},{name:'IMS',x:40,y:42,color:'#2D7A3A'},{name:'Ibirapuera',x:52,y:62,color:'#2D7A3A'},{name:'Villa-Lobos',x:18,y:38,color:'#2D7A3A'}].forEach(p=>{const el=document.createElement('div');el.className='map-place';el.style.cssText=`left:${p.x}%;top:${p.y}%`;el.innerHTML=`<div class="mp-dot" style="background:${p.color}"></div><div class="mp-label">${p.name}</div>`;mb.appendChild(el)});
-const occ=[{emoji:'💑',title:'Dates',desc:'Roteiros romanticos e memoraveis para dois',color:'#D45F3C',tc:'#fff'},{emoji:'🎂',title:'Aniversarios',desc:'Celebre de um jeito especial em SP',color:'#3A4FD6',tc:'#fff'},{emoji:'🍻',title:'Happy Hour',desc:'Os melhores bares e terracos da cidade',color:'#C8E84A',tc:'#1A2035'},{emoji:'🧘',title:'Atividades Solo',desc:'Momentos so seus, sem compromisso',color:'#2D7A3A',tc:'#fff'},{emoji:'👯',title:'Saida com Amigos',desc:'Roles em grupo que todo mundo vai amar',color:'#1A2035',tc:'#C8E84A'},{emoji:'👨‍👩‍👧',title:'Saida em Familia',desc:'Programas pra todas as idades curtir junto',color:'#C83B2A',tc:'#fff'}];
-const og=document.getElementById('occasionsGrid');
-occ.forEach(o=>{const c=document.createElement('div');c.className='occasion-card reveal';c.style.background=o.color;c.style.color=o.tc;c.innerHTML=`<div class="occ-dots">${Array(12).fill(0).map(()=>`<div style="width:${Math.random()*14+5}px;height:${Math.random()*14+5}px;border-radius:50%;background:${o.tc}"></div>`).join('')}</div><div class="occasion-emoji">${o.emoji}</div><div class="occasion-title">${o.title}</div><div class="occasion-desc">${o.desc}</div>`;og.appendChild(c)});
-const bens=[{icon:'🎯',title:'Curadoria Confiavel',desc:'Cada lugar passou por uma selecao criteriosa - nada de lista generica sem contexto.'},{icon:'⭐',title:'Reviews Reais',desc:'Avaliacoes de pessoas que realmente foram la, sem patrocinio ou vies.'},{icon:'⚡',title:'Economia de Tempo',desc:'Esqueca horas pesquisando. Em minutos voce tem um roteiro completo e confiavel.'},{icon:'📍',title:'Tudo em Um Lugar',desc:'Localizacao, preco, como chegar, horarios e dicas praticas reunidos pra voce.'}];
-const bg2=document.getElementById('benefitsGrid');
-bens.forEach(b=>{const c=document.createElement('div');c.className='benefit-card reveal';c.innerHTML=`<div class="benefit-icon">${b.icon}</div><div class="benefit-title">${b.title}</div><div class="benefit-desc">${b.desc}</div>`;bg2.appendChild(c)});
-const tests=[{text:'O find mudou meu fim de semana. Em vez de ficar sem ideia ou ir sempre nos mesmos lugares, agora eu descubro coisas incriveis que eu nem sabia que existiam em SP.',name:'Juliana M.',role:'Pinheiros, SP',color:'#3A4FD6',stars:'★★★★★'},{text:'Usamos pra planejar o aniversario da minha mae e foi perfeito. Tudo certinho: endereco, preco, como chegar de metro. Zero stress, 100% aprovacao da familia.',name:'Rafael S.',role:'Mooca, SP',color:'#D45F3C',stars:'★★★★★'},{text:'Finalmente um app que entende Sao Paulo de verdade. Os reviews sao genuinos e as sugestoes batem com o que eu gosto. Vou toda semana nos lugares que o find indica.',name:'Camila A.',role:'Vila Madalena, SP',color:'#2D7A3A',stars:'★★★★★'}];
-const tg=document.getElementById('testimonialsGrid');
-tests.forEach(t=>{const c=document.createElement('div');c.className='testimonial-card reveal';c.innerHTML=`<div class="t-quote">"</div><div class="testimonial-stars">${t.stars}</div><div class="testimonial-text">"${t.text}"</div><div class="testimonial-author"><div class="t-avatar" style="background:${t.color}">${t.name[0]}</div><div><div class="t-name">${t.name}</div><div class="t-role">${t.role}</div></div></div>`;tg.appendChild(c)});
-function buildQ(id,opts){const c=document.getElementById(id);opts.forEach(o=>{const b=document.createElement('button');b.className='survey-opt';b.textContent=o;b.onclick=()=>{c.querySelectorAll('.survey-opt').forEach(x=>x.classList.remove('active'));b.classList.add('active')};c.appendChild(b)})}
-buildQ('q1',['Cultura','Gastronomia','Natureza','Balada','Bem-estar','Arte']);
-buildQ('q2',['Solo','Casal','Amigos','Familia','Colegas de trabalho']);
-function submitSurvey(){const e=document.getElementById('emailInput').value;if(!e){alert('Insira seu e-mail 😊');return}const b=document.querySelector('.survey-submit');b.textContent='🎉 Voce esta na lista! Obrigado!';b.style.background='#C8E84A';b.disabled=true}
-const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}}),{threshold:.12});
+const tg=document.getElementById('testiGrid');
+testis.forEach(t=>{const c=document.createElement('div');c.className='testi-card reveal';c.innerHTML=`<div class="tq">"</div><div class="testi-stars">${t.stars}</div><div class="testi-text">"${t.text}"</div><div class="testi-author"><div class="tav" style="background:${t.color}">${t.name[0]}</div><div><div class="tname">${t.name}</div><div class="trole">${t.role}</div></div></div>`;tg.appendChild(c)});
+
+// ── SURVEY ──
+function buildSQ(id,opts){const c=document.getElementById(id);opts.forEach(o=>{const b=document.createElement('button');b.className='sopt';b.textContent=o;b.onclick=()=>{c.querySelectorAll('.sopt').forEach(x=>x.classList.remove('on'));b.classList.add('on')};c.appendChild(b)})}
+buildSQ('sq1',['Cultura','Gastronomia','Natureza','Balada','Bem-estar','Arte']);
+buildSQ('sq2',['Solo','Casal','Amigos','Família','Colegas']);
+document.getElementById('sDob').setAttribute('max',new Date().toISOString().slice(0,10));
+function submitSurvey(){
+  const email=document.getElementById('sEmail').value.trim();
+  if(!email){alert('Insira seu e-mail 😊');return}
+  const q1=[...document.querySelectorAll('#sq1 .sopt.on')].map(x=>x.textContent).join(', ');
+  const q2=[...document.querySelectorAll('#sq2 .sopt.on')].map(x=>x.textContent).join(', ');
+  addLead({name:'',email,dob:document.getElementById('sDob').value,interests:q1,companions:q2,bairro:document.getElementById('sBairro').value,origin:'survey'});
+  const btn=document.querySelector('.ssubmit');
+  btn.textContent='Você está na lista! 🎉';btn.style.background='#C8E84A';btn.disabled=true;
+}
+
+// ── POPUP ──
+const ptd=document.getElementById('ptdots');
+['#C8E84A','#2D7A3A','#C83B2A','rgba(245,240,232,.3)'].forEach(c=>{for(let i=0;i<5;i++){const d=document.createElement('span');const s=Math.random()*14+5;d.style.cssText=`position:absolute;border-radius:50%;width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:${c};opacity:${Math.random()*.4+.1}`;ptd.appendChild(d)}});
+const pch=document.getElementById('pchips');
+['Cultura','Gastronomia','Natureza','Balada','Bem-estar','Arte'].forEach(o=>{const b=document.createElement('button');b.className='pchip';b.textContent=o;b.onclick=()=>b.classList.toggle('on');pch.appendChild(b)});
+document.getElementById('popDob').setAttribute('max',new Date().toISOString().slice(0,10));
+const dismissed=localStorage.getItem('find_popup_dismissed');
+if(dismissed===new Date().toDateString()) document.getElementById('popup-overlay').style.display='none';
+function closePopup(){const ov=document.getElementById('popup-overlay');ov.style.opacity='0';ov.style.transition='opacity .3s';setTimeout(()=>ov.style.display='none',300);localStorage.setItem('find_popup_dismissed',new Date().toDateString())}
+function submitPopup(){
+  const email=document.getElementById('popEmail').value.trim();
+  if(!email){document.getElementById('popEmail').style.borderColor='#f87171';document.getElementById('popEmail').focus();return}
+  const ints=[...document.querySelectorAll('#pchips .pchip.on')].map(x=>x.textContent).join(', ');
+  const notif=document.getElementById('popNotif').checked;
+  addLead({name:document.getElementById('popName').value.trim(),email,dob:document.getElementById('popDob').value,interests:ints,notif,origin:'popup'});
+  const name=document.getElementById('popName').value.trim();
+  document.getElementById('popupBody').innerHTML=`<div class="pok"><div class="pok-icon">🎉</div><h3>Você está na lista!</h3><p>Obrigado${name?' '+name:''}!<br>Você será um dos primeiros a testar o find' em São Paulo.</p><button class="pbtn" style="margin-top:24px" onclick="closePopup()">Explorar o site ✨</button></div>`;
+}
+
+// ── ADMIN ──
+function openAdmin(){document.getElementById('admin-panel').classList.add('open');renderAdmin()}
+function closeAdmin(){document.getElementById('admin-panel').classList.remove('open')}
+function renderAdmin(){
+  const leads=getLeads();
+  const ints=leads.flatMap(l=>l.interests?l.interests.split(', '):[]);
+  const top=ints.length?ints.sort((a,b)=>ints.filter(x=>x===b).length-ints.filter(x=>x===a).length)[0]:'-';
+  const today=leads.filter(l=>l.date&&l.date.startsWith(new Date().toLocaleDateString('pt-BR'))).length;
+  document.getElementById('adminStats').innerHTML=`<div class="astat"><div class="astat-n">${leads.length}</div><div class="astat-l">Total leads</div></div><div class="astat"><div class="astat-n">${today}</div><div class="astat-l">Hoje</div></div><div class="astat"><div class="astat-n">${leads.filter(l=>l.email).length}</div><div class="astat-l">Com e-mail</div></div><div class="astat"><div class="astat-n" style="font-size:1rem;padding-top:10px">${top}</div><div class="astat-l">Top interesse</div></div>`;
+  if(!leads.length){document.getElementById('adminTable').innerHTML='<div class="aempty">Nenhum lead ainda 📭</div>';return}
+  document.getElementById('adminTable').innerHTML=`<table class="ltbl"><thead><tr><th>#</th><th>Nome</th><th>E-mail</th><th>Nasc.</th><th>Interesses</th><th>Origem</th><th>Data</th></tr></thead><tbody>${leads.map((l,i)=>`<tr><td style="opacity:.3">${leads.length-i}</td><td>${l.name||'—'}</td><td class="tdem">${l.email||'—'}</td><td class="tddt">${l.dob?l.dob.split('-').reverse().join('/'):'—'}</td><td>${l.interests?l.interests.split(', ').map(x=>`<span class="tdbg">${x}</span>`).join(''):'—'}</td><td><span class="tdbg" style="background:rgba(45,122,58,.2);color:#86efac">${l.origin||'popup'}</span></td><td class="tddt">${l.date||'—'}</td></tr>`).join('')}</tbody></table>`;
+}
+function exportCSV(){
+  const leads=getLeads();if(!leads.length){alert('Nenhum lead.');return}
+  const h=['#','Nome','E-mail','Nascimento','Interesses','Bairro','Origem','Data'];
+  const rows=leads.map((l,i)=>[leads.length-i,l.name||'',l.email||'',l.dob||'',l.interests||'',l.bairro||'',l.origin||'popup',l.date||''].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','));
+  const csv=[h.join(','),...rows].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=`find-leads-${new Date().toISOString().slice(0,10)}.csv`;a.click();
+}
+function clearLeads(){if(!confirm('Apagar todos os leads?'))return;saveLeads([]);updateFabCount();renderAdmin()}
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+updateFabCount();
 </script>
 </body>
 </html>
