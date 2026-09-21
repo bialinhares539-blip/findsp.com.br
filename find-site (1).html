@@ -605,53 +605,6 @@ table.ltbl{width:100%;border-collapse:collapse}
 </div>
 
 <script>
-// ── GOOGLE PLACES PHOTOS (automático) ──
-// 1) Crie um projeto no Google Cloud Console, ative a "Places API" (legada) e o faturamento.
-// 2) Gere uma chave de API e restrinja por "referenciadores HTTP" (seu domínio) para evitar uso indevido.
-// 3) Cole a chave abaixo. Sem chave, o site usa as imagens de placeholder normalmente.
-const GOOGLE_MAPS_API_KEY = 'COLE_SUA_CHAVE_DA_GOOGLE_PLACES_API_AQUI';
-
-let placesService = null;
-function loadGoogleMaps(){
-  if(!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.indexOf('COLE_SUA_CHAVE') === 0){
-    console.warn('[find\'] Chave da Google Places API não configurada — usando imagens de placeholder.');
-    return;
-  }
-  const script=document.createElement('script');
-  script.src=`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=onGoogleMapsLoaded`;
-  script.async=true;
-  document.head.appendChild(script);
-}
-window.onGoogleMapsLoaded=function(){
-  const dummyMap=new google.maps.Map(document.createElement('div'));
-  placesService=new google.maps.places.PlacesService(dummyMap);
-  document.dispatchEvent(new Event('gmaps-ready'));
-};
-loadGoogleMaps();
-
-const GOOGLE_PHOTO_CACHE_KEY='find_google_photo_cache_v1';
-function getPhotoCache(){ try{return JSON.parse(localStorage.getItem(GOOGLE_PHOTO_CACHE_KEY)||'{}')}catch{return{}} }
-function savePhotoCache(c){ try{localStorage.setItem(GOOGLE_PHOTO_CACHE_KEY,JSON.stringify(c))}catch{} }
-
-// Busca a foto real do Google para um lugar e chama onFound(url) quando encontrar.
-// Resultado fica em cache no navegador (localStorage) para não repetir a busca sempre.
-function fetchGooglePhoto(place, onFound){
-  const cache=getPhotoCache();
-  if(cache[place.id]){ onFound(cache[place.id]); return; }
-  if(!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.indexOf('COLE_SUA_CHAVE') === 0) return;
-  if(!placesService){ document.addEventListener('gmaps-ready',()=>fetchGooglePhoto(place,onFound),{once:true}); return; }
-  const query=`${place.name}, ${place.loc}`;
-  placesService.findPlaceFromQuery({query,fields:['place_id','photos']},(results,status)=>{
-    if(status===google.maps.places.PlacesServiceStatus.OK && results && results[0] && results[0].photos && results[0].photos.length){
-      const url=results[0].photos[0].getUrl({maxWidth:800});
-      cache[place.id]=url; savePhotoCache(cache);
-      onFound(url);
-    } else {
-      cache[place.id]=place.img; savePhotoCache(cache); // evita tentar de novo a cada load
-    }
-  });
-}
-
 // ── DATA ──
 const DC=['#3A4FD6','#2D7A3A','#C8E84A','#1A2035','#D45F3C','#C83B2A'];
 
@@ -798,10 +751,6 @@ function renderResults(list){
         <span class="place-btn" onclick="openModal('${p.id}')">Ver perfil →</span>
       </div>`;
     grid.appendChild(card);
-    fetchGooglePhoto(p,url=>{
-      const thumb=card.querySelector('.place-card-thumb');
-      if(thumb) thumb.style.backgroundImage=`url('${url}')`;
-    });
   });
 }
 
@@ -817,7 +766,6 @@ function openModal(pid){
 
   // hero
   document.getElementById('modalHero').style.backgroundImage=`url('${p.img}')`;
-  fetchGooglePhoto(p,url=>{ document.getElementById('modalHero').style.backgroundImage=`url('${url}')`; });
   document.getElementById('mBadge').textContent={'bares':'🍺 Bar','restaurantes':'🍽 Restaurante','experiencias':'✨ Experiência'}[p.category];
   document.getElementById('mName').textContent=p.name;
   document.getElementById('mTagline').textContent=p.tagline;
